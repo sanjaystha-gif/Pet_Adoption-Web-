@@ -39,7 +39,7 @@ export default function RegisterForm() {
         {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
       </div>
 
-      <button type="submit" className="bg-green-600 text-white p-2 rounded">Register</button>
+      <button type="submit" className="text-white p-2 rounded" style={{ backgroundColor: '#FF6F61' }}>Register</button>
     </form>
   );
 }
