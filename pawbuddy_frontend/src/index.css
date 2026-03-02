@@ -240,6 +240,17 @@ input:focus {
   color: transparent;
 }
 
+/* Gradient button helper */
+.btn-gradient {
+  background: linear-gradient(90deg,var(--color-primary-600), var(--color-accent));
+  color: white !important;
+  box-shadow: 0 10px 30px rgba(200,80,60,0.12);
+}
+
+.shadow-bright {
+  box-shadow: 0 12px 30px rgba(232,112,90,0.12);
+}
+
 @media (min-width: 640px) {
   .container {
     padding-left: 1.5rem;

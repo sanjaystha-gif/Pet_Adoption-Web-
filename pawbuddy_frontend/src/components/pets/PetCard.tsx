@@ -27,13 +27,14 @@ export const PetCard: React.FC<PetCardProps> = ({
   }
 
   return (
-    <div
-      role="button"
-      aria-label={`View ${pet.name} details`}
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-      className="bg-card rounded-2xl overflow-hidden transform hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
-    >
+    <div className="p-[2px] rounded-2xl bg-gradient-to-r from-pink-300 via-primary-600 to-accent-200">
+      <div
+        role="button"
+        aria-label={`View ${pet.name} details`}
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
+        className="bg-card rounded-xl overflow-hidden transform hover:-translate-y-1 hover:shadow-bright transition-all duration-300 h-full flex flex-col"
+      >
       {/* Image + overlay */}
       <div className="relative overflow-hidden">
         <div className="aspect-[4/3] w-full bg-gray-100 overflow-hidden">
@@ -45,7 +46,7 @@ export const PetCard: React.FC<PetCardProps> = ({
         </div>
 
         {/* Gradient overlay with name */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 via-black/20 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-bold text-white">{pet.name}</h3>
@@ -80,7 +81,7 @@ export const PetCard: React.FC<PetCardProps> = ({
       </div>
 
       {/* Content */}
-      <div className="p-4 flex-1 flex flex-col justify-between">
+        <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <Badge variant="secondary" size="sm">{pet.gender === 'male' ? '♂️' : '♀️'} {pet.gender}</Badge>
@@ -95,9 +96,10 @@ export const PetCard: React.FC<PetCardProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <Button onClick={() => onMeetClick?.(pet.id)} variant="primary" size="sm">Meet Me</Button>
-          <Button onClick={() => onFavourite?.(pet.id)} variant="outline" size="sm">Message</Button>
+          <Button onClick={() => onMeetClick?.(pet.id)} variant="primary" size="sm" className="btn-gradient">Meet Me</Button>
+          <Button onClick={() => onFavourite?.(pet.id)} variant="outline" size="sm" className="border-gray-300 text-gray-700">Message</Button>
         </div>
+      </div>
       </div>
     </div>
   )
