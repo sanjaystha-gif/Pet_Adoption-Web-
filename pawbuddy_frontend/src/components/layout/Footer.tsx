@@ -4,16 +4,15 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-secondary-700 text-white mt-20">
+    <footer className="bg-gray-50 text-gray-700 mt-20 border-t border-gray-100">
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div>
             <h3 className="font-display text-2xl font-bold mb-4">
-              <span className="text-primary-600">🐾 Paw</span>
-              <span>Buddy</span>
+              <span className="logo-gradient">🐾 PawBuddy</span>
             </h3>
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-600">
               Find your perfect furry companion and give them a loving home.
             </p>
           </div>
@@ -21,19 +20,19 @@ export const Footer: React.FC = () => {
           {/* Links */}
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <ul className="space-y-2 text-sm text-gray-600">
               <li>
-                <Link to="/adopt" className="hover:text-white transition-colors">
+                <Link to="/adopt" className="hover:text-primary-600 transition-colors">
                   Browse Pets
                 </Link>
               </li>
               <li>
-                <Link to="/care-guide" className="hover:text-white transition-colors">
+                <Link to="/care-guide" className="hover:text-primary-600 transition-colors">
                   Care Guide
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-white transition-colors">
+                <Link to="/about" className="hover:text-primary-600 transition-colors">
                   About Us
                 </Link>
               </li>
@@ -43,39 +42,44 @@ export const Footer: React.FC = () => {
           {/* Support */}
           <div>
             <h4 className="font-semibold mb-4">Support</h4>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <ul className="space-y-2 text-sm text-gray-600">
               <li>
-                <a href="mailto:support@pawbuddy.com" className="hover:text-white transition-colors">
+                <a href="mailto:support@pawbuddy.com" className="hover:text-primary-600 transition-colors">
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-primary-600 transition-colors">
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <a href="#" className="hover:text-primary-600 transition-colors">
                   Privacy Policy
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Social */}
+          {/* Newsletter */}
           <div>
-            <h4 className="font-semibold mb-4">Follow Us</h4>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-primary-600 transition-colors">
+            <h4 className="font-semibold mb-4">Stay in touch</h4>
+            <p className="text-sm text-gray-600 mb-4">Subscribe to get pet updates and adoption stories.</p>
+            <form className="flex gap-2">
+              <input aria-label="Email" type="email" placeholder="Your email" className="flex-1 rounded-full border border-gray-200 px-4 py-2 focus:outline-none" />
+              <button type="submit" className="btn-primary">Subscribe</button>
+            </form>
+            <div className="flex gap-4 mt-6">
+              <a href="#" className="text-gray-500 hover:text-primary-600 transition-colors">
                 <FaFacebook size={20} />
               </a>
-              <a href="#" className="hover:text-primary-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-primary-600 transition-colors">
                 <FaTwitter size={20} />
               </a>
-              <a href="#" className="hover:text-primary-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-primary-600 transition-colors">
                 <FaInstagram size={20} />
               </a>
-              <a href="#" className="hover:text-primary-600 transition-colors">
+              <a href="#" className="text-gray-500 hover:text-primary-600 transition-colors">
                 <FaLinkedin size={20} />
               </a>
             </div>
@@ -83,8 +87,8 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-gray-600 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2024 PawBuddy. All rights reserved. Made with ❤️ for pet lovers.</p>
+        <div className="pt-8 text-center text-sm text-gray-500">
+          <p>&copy; 2024 PawBuddy. All rights reserved.</p>
         </div>
       </div>
     </footer>

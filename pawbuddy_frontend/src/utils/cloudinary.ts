@@ -105,3 +105,26 @@ export const optimizeCloudinaryUrl = (
 export const getPlaceholderImage = (seed: string): string => {
   return `https://picsum.photos/seed/${seed}/400/300`
 }
+
+/**
+ * Build a Cloudinary image URL from a public id and folder.
+ * Returns a placeholder when Cloudinary is not configured (local/dev).
+ */
+export const buildCloudinaryUrl = (
+  publicId: string,
+  folder = 'pawbuddy_images',
+  options: { width?: number; height?: number; quality?: string; format?: string } = {}
+): string => {
+  const { width = 800, height = 600, quality = 'auto', format = 'auto' } = options
+
+  // If no real cloud name configured (demo), return a placeholder so local dev shows images
+  if (!CLOUD_NAME || CLOUD_NAME === 'demo') {
+    return getPlaceholderImage(publicId)
+  }
+
+  const base = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`
+  const transformation = `w_${width},h_${height},c_fill,q_${quality},f_${format}`
+  const cleanedId = publicId.startsWith('/') ? publicId.slice(1) : publicId
+
+  return `${base}/${transformation}/${folder}/${cleanedId}`
+}

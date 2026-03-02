@@ -8,6 +8,7 @@ import { useBooking } from '../../context/bookingStore'
 import { useAuth } from '../../context/authStore'
 import type { Pet } from '../../types'
 import { AiOutlineStar } from 'react-icons/ai'
+import { buildCloudinaryUrl } from '../../utils/cloudinary'
 
 const HomePage: React.FC = () => {
   const { pets, getAllPets } = usePets()
@@ -25,48 +26,39 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="page-enter">
-      <section className="bg-secondary-50 relative overflow-hidden">
-        <div className="container py-20 relative z-10">
+      <section className="relative overflow-hidden">
+        <div className="container py-24">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="font-display text-5xl font-bold text-primary mb-4">
-                Find Your Perfect
+              <h1 className="font-display text-5xl md:text-6xl font-bold mb-6">
+                Find Your
                 <br />
-                <span className="text-primary-600">Furry Companion</span>
-                <span className="text-3xl ml-2">🐾</span>
+                <span className="logo-gradient">perfect companion</span>
               </h1>
-              <p className="text-lg text-text-secondary mb-8">
-                Give a loving home to a dog or cat in need. Browse our available pets, learn about pet care, and start your adoption journey today.
+              <p className="text-lg text-gray-600 mb-8">
+                Browse adoptable dogs and cats, learn about pet care, and start the adoption process with confidence.
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <Link to="/adopt">
-                  <Button variant="primary" size="lg">
-                    Adopt Now
-                  </Button>
+                  <Button variant="primary" size="lg">Adopt Now</Button>
                 </Link>
                 <Link to="/care-guide">
-                  <Button variant="outline" size="lg">
-                    Learn More
-                  </Button>
+                  <Button variant="outline" size="lg">Care Guide</Button>
                 </Link>
               </div>
+              <div className="mt-6 text-sm text-gray-500">Trusted by shelters and adopters across the country.</div>
             </div>
 
-            <div className="relative h-96">
-              <div className="w-80 h-80 rounded-full bg-primary-100 mx-auto relative">
-                <img
-                  src="https://picsum.photos/seed/hero-dog/400/400"
-                  alt="Happy pet"
-                  className="absolute inset-0 w-full h-full object-cover rounded-full"
-                />
+            <div className="flex justify-center">
+              <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-lg">
+                <img src={buildCloudinaryUrl('dog-1')} alt="Happy pet" className="w-full h-[420px] object-cover" />
+                <div className="absolute -bottom-6 -right-6 w-44 h-44 rounded-lg bg-white/80 backdrop-blur p-3 flex items-center justify-center text-sm font-medium">
+                  Meet friendly pets near you
+                </div>
               </div>
-              <div className="absolute top-10 left-10 text-6xl opacity-30 animate-float">🐾</div>
-              <div className="absolute bottom-20 right-10 text-6xl opacity-30 animate-float" style={{ animationDelay: '1s' }}>🐾</div>
             </div>
           </div>
         </div>
-
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-primary-100 rounded-full opacity-50" />
       </section>
 
       <section className="bg-white py-12">

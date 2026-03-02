@@ -48,7 +48,7 @@ export const Navbar: React.FC = () => {
   ]
 
   return (
-    <nav className="bg-white shadow-branded sticky top-0 z-40">
+    <nav className="sticky top-0 z-40 nav-glass shadow-sm border-b border-gray-100">
       <div className="container flex items-center justify-between h-20">
         {/* Logo */}
         <Link
@@ -60,16 +60,25 @@ export const Navbar: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {publicNavLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className="text-text-secondary hover:text-primary-600 font-medium transition-colors"
+              className="text-sm text-gray-700 hover:text-primary-600 font-medium transition-colors"
             >
               {link.label}
             </Link>
           ))}
+
+          <div className="ml-4">
+            <input
+              type="search"
+              aria-label="Search pets"
+              placeholder="Search pets, breeds or cities"
+              className="px-3 py-2 rounded-full border border-gray-200 w-64 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary-600"
+            />
+          </div>
         </div>
 
         {/* Right Section */}
@@ -100,7 +109,7 @@ export const Navbar: React.FC = () => {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div id="user-menu" role="menu" className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <div id="user-menu" role="menu" className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
                     <div className="px-4 py-3 border-b border-border">
                       <p className="font-semibold text-primary">{user?.name}</p>
                       <p className="text-sm text-text-secondary">{user?.email}</p>
@@ -175,16 +184,10 @@ export const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="hidden sm:block text-primary-600 font-semibold hover:text-primary-700"
-              >
+              <Link to="/login" className="hidden sm:block text-sm text-gray-700 font-medium hover:text-primary-600">
                 Login
               </Link>
-              <Link
-                to="/register"
-                className="hidden sm:block btn-primary text-sm px-6 py-2"
-              >
+              <Link to="/register" className="hidden sm:block btn-primary text-sm px-5 py-2 ml-3">
                 Register
               </Link>
             </>
