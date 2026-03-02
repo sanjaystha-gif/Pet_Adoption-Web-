@@ -1,0 +1,130 @@
+// Cloudinary configuration and utilities
+declare global {
+  interface Window {
+    cloudinary: any
+  }
+}
+
+const CLOUD_NAME = (import.meta as any).env.VITE_CLOUDINARY_CLOUD_NAME || 'demo'
+const UPLOAD_PRESET = (import.meta as any).env.VITE_CLOUDINARY_UPLOAD_PRESET || 'pawbuddy'
+
+/**
+ * Opens Cloudinary upload widget
+ */
+export const openCloudinaryWidget = (
+  onSuccess?: (url: string) => void,
+  onError?: (error: any) => void
+): void => {
+  if (!window.cloudinary) {
+    onError?.('Cloudinary not available')
+    return
+  }
+
+  window.cloudinary.openUploadWidget(
+    {
+      cloudName: CLOUD_NAME,
+      uploadPreset: UPLOAD_PRESET,
+      sources: ['local', 'instagram', 'twitter', 'url'],
+      multiple: true,
+      maxFiles: 5,
+      folder: 'pawbuddy/pets',
+      cropping: 'free',
+      resourceType: 'image',
+      styles: {
+        palette: {
+          window: '#FFFFFF',
+          windowBorder: '#E8705A',
+          tabIcon: '#E8705A',
+          menuIcons: '#7A6A65',
+          textDark: '#2D1B14',
+          textLight: '#FFFFFF',
+          link: '#E8705A',
+          action: '#E8705A',
+          inactiveTabIcon: '#7A6A65',
+          error: '#F44235',
+          inProgress: '#E8705A',
+          complete: '#A8D5BA',
+          sourceBg: '#FFF8F6'
+        }
+      }
+    },
+    (error: any, result: any) => {
+      if (error) {
+        onError?.(error)
+      } else if (result && result.event === 'success') {
+        onSuccess?.(result.info.secure_url)
+      }
+    }
+  )
+}
+
+/**
+ * Optimizes Cloudinary URL with transformations
+ */
+export const optimizeCloudinaryUrl = (
+  url: string | undefined | null,
+  options: {
+    width?: number
+    height?: number
+    crop?: string
+    quality?: string
+    format?: string
+  } = {}
+): string | null => {
+  if (!url) return null
+
+  const {
+    width = 400,
+    height = 300,
+    crop = 'fill',
+    quality = 'auto',
+    format = 'auto'
+  } = options
+
+  // If it's a demo Cloudinary URL, return as is
+  if (url.includes('res.cloudinary.com/demo')) {
+    return url
+  }
+
+  // For other Cloudinary URLs, add transformations
+  if (url.includes('res.cloudinary.com')) {
+    const parts = url.split('/upload/')
+    if (parts.length === 2) {
+      return `${parts[0]}/upload/w_${width},h_${height},c_${crop},q_${quality},f_${format}/${parts[1]}`
+    }
+  }
+
+  return url
+}
+
+/**
+ * Generate a placeholder image URL
+ */
+export const getPlaceholderImage = (seed: string): string => {
+  return `https://picsum.photos/seed/${seed}/400/300`
+}
+
+/**
+ * Build a Cloudinary image URL from a public id and folder.
+ * Does not require API key/secret and is safe to use client-side for public assets.
+ */
+export const buildCloudinaryUrl = (
+  publicId: string,
+  folder = 'pawbuddy_images',
+  options: { width?: number; height?: number; quality?: string; format?: string } = {}
+): string => {
+  const { width = 800, height = 600, quality = 'auto', format = 'auto' } = options
+
+  // If no real cloud name configured (demo), return a placeholder so local dev shows images
+  if (!CLOUD_NAME || CLOUD_NAME === 'demo') {
+    return getPlaceholderImage(publicId)
+  }
+
+  const base = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`
+
+  const transformation = `w_${width},h_${height},c_fill,q_${quality},f_${format}`
+
+  const cleanedId = publicId.startsWith('/') ? publicId.slice(1) : publicId
+
+  return `${base}/${transformation}/${folder}/${cleanedId}`
+}
