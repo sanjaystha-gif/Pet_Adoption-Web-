@@ -49,7 +49,7 @@ export const PetCard: React.FC<PetCardProps> = ({
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">{pet.name}</h3>
+              <h3 className="text-lg font-bold logo-gradient">{pet.name}</h3>
               <p className="text-sm text-white/90">{pet.breed} • {pet.ageDisplay}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -81,23 +81,23 @@ export const PetCard: React.FC<PetCardProps> = ({
       </div>
 
       {/* Content */}
-        <div className="p-4 flex-1 flex flex-col justify-between">
+        <div className="p-4 flex-1 flex flex-col justify-between bg-gradient-to-br from-white via-primary-50 to-accent-50">
         <div>
-          <div className="flex items-center gap-2 mb-3 flex-wrap">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
             <Badge variant="secondary" size="sm">{pet.gender === 'male' ? '♂️' : '♀️'} {pet.gender}</Badge>
             <Badge variant="secondary" size="sm">{pet.size}</Badge>
             {pet.vaccinated && <Badge variant="info" size="sm">Vaccinated</Badge>}
             {pet.neutered && <Badge variant="info" size="sm">Neutered</Badge>}
           </div>
 
-          <p className="text-sm text-text-secondary mb-4"><FiMapPin size={14} className="inline mr-1" />{pet.location}</p>
+            <p className="text-sm text-text-secondary mb-4"><FiMapPin size={14} className="inline mr-1" />{pet.location}</p>
 
-          <p className="text-sm text-text-secondary line-clamp-3 mb-4">{pet.description}</p>
+            <p className="text-sm text-text-secondary line-clamp-3 mb-4">{pet.description}</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <Button onClick={() => onMeetClick?.(pet.id)} variant="primary" size="sm" className="btn-gradient">Meet Me</Button>
-          <Button onClick={() => onFavourite?.(pet.id)} variant="outline" size="sm" className="border-gray-300 text-gray-700">Message</Button>
+            <Button onClick={() => onMeetClick?.(pet.id)} variant="primary" size="sm" className="btn-gradient">Meet Me</Button>
+            <Button onClick={() => onFavourite?.(pet.id)} variant="outline" size="sm" className="border-gray-300 text-gray-700">Message</Button>
         </div>
       </div>
       </div>
