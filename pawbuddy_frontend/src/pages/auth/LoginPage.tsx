@@ -48,19 +48,31 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="container py-20 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={error ? 'login-error' : undefined}>
-        <Input ref={emailRef} id="login-email" name="email" label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" />
-        <Input id="login-password" name="password" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required aria-required="true" />
-
-        {error && <p id="login-error" role="alert" className="text-error">{error}</p>}
-
-        <div className="flex items-center justify-between">
-          <Link to="/register" className="text-sm text-primary-600">Don't have an account? Register</Link>
-          <Button type="submit" isLoading={isLoading} aria-disabled={isLoading}>Login</Button>
+    <div className="min-h-[70vh] flex items-center justify-center py-12">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-bold">Welcome Back</h1>
+          <p className="text-sm text-slate-500">Sign in to access your PawBuddy account</p>
         </div>
-      </form>
+
+        <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={error ? 'login-error' : undefined}>
+          <Input ref={emailRef} id="login-email" name="email" label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" />
+          <Input id="login-password" name="password" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required aria-required="true" />
+
+          {error && <p id="login-error" role="alert" className="text-error">{error}</p>}
+
+          <div className="flex items-center justify-between">
+            <Link to="/register" className="text-sm text-primary-600">Create an account</Link>
+            <Button type="submit" isLoading={isLoading} aria-disabled={isLoading}>Sign in</Button>
+          </div>
+        </form>
+
+        <div className="mt-6 text-center text-sm text-slate-500">or continue with</div>
+        <div className="mt-4 flex gap-3">
+          <button className="flex-1 py-2 rounded-md border border-slate-200 text-sm">Continue with Google</button>
+          <button className="flex-1 py-2 rounded-md border border-slate-200 text-sm">Continue with Apple</button>
+        </div>
+      </div>
     </div>
   )
 }

@@ -60,22 +60,34 @@ const RegisterPage: React.FC = () => {
   }
 
   return (
-    <div className="container py-20 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Register</h1>
-      <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={error ? 'register-error' : undefined}>
-        <Input ref={nameRef} id="register-name" name="name" label="Full Name" value={name} onChange={(e) => setName(e.target.value)} required aria-required="true" />
-        <Input id="register-email" name="email" label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" />
-        <Input id="register-phone" name="phone" label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required aria-required="true" />
-        <Input id="register-password" name="password" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required aria-required="true" />
-        <Input id="register-confirm" name="confirm" label="Confirm Password" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required aria-required="true" />
-
-        {error && <p id="register-error" role="alert" className="text-error">{error}</p>}
-
-        <div className="flex items-center justify-between">
-          <Link to="/login" className="text-sm text-primary-600">Already have an account? Login</Link>
-          <Button type="submit" isLoading={isLoading} aria-disabled={isLoading}>Register</Button>
+    <div className="min-h-[70vh] flex items-center justify-center py-12">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+        <div className="mb-6 text-center">
+          <h1 className="text-2xl font-bold">Get Started</h1>
+          <p className="text-sm text-slate-500">Create your account to begin the adoption process</p>
         </div>
-      </form>
+
+        <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={error ? 'register-error' : undefined}>
+          <Input ref={nameRef} id="register-name" name="name" label="Full Name" value={name} onChange={(e) => setName(e.target.value)} required aria-required="true" />
+          <Input id="register-email" name="email" label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" />
+          <Input id="register-phone" name="phone" label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required aria-required="true" />
+          <Input id="register-password" name="password" label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required aria-required="true" />
+          <Input id="register-confirm" name="confirm" label="Confirm Password" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required aria-required="true" />
+
+          {error && <p id="register-error" role="alert" className="text-error">{error}</p>}
+
+          <div className="flex items-center justify-between">
+            <Link to="/login" className="text-sm text-primary-600">Already have an account?</Link>
+            <Button type="submit" isLoading={isLoading} aria-disabled={isLoading}>Create account</Button>
+          </div>
+        </form>
+
+        <div className="mt-6 text-center text-sm text-slate-500">or continue with</div>
+        <div className="mt-4 flex gap-3">
+          <button className="flex-1 py-2 rounded-md border border-slate-200 text-sm">Continue with Google</button>
+          <button className="flex-1 py-2 rounded-md border border-slate-200 text-sm">Continue with Apple</button>
+        </div>
+      </div>
     </div>
   )
 }

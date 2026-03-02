@@ -73,7 +73,7 @@ function Pr-Exists($owner, $repo, $branch, $base) {
         $res = Invoke-RestMethod -Uri $url -Headers $headers -Method Get -ErrorAction Stop
         return ($res.Count -gt 0)
     } catch {
-        Write-Warning "Failed to check existing PRs for $branch: $($_.Exception.Message)"
+        Write-Warning "Failed to check existing PRs for ${branch}: $($_.Exception.Message)"
         return $false
     }
 }
@@ -91,7 +91,7 @@ function Create-Pr($owner, $repo, $branch, $base) {
         $res = Invoke-RestMethod -Uri $url -Headers $headers -Method Post -Body $body -ContentType 'application/json' -ErrorAction Stop
         return $res.html_url
     } catch {
-        Write-Warning "Failed to create PR for $branch: $($_.Exception.Message)"
+        Write-Warning "Failed to create PR for ${branch}: $($_.Exception.Message)"
         return $null
     }
 }

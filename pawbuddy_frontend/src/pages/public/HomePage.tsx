@@ -8,7 +8,7 @@ import { usePets } from '../../context/petStore'
 import { useBooking } from '../../context/bookingStore'
 import { useAuth } from '../../context/authStore'
 import type { Pet } from '../../types'
-import { AiOutlineStar } from 'react-icons/ai'
+import { buildCloudinaryUrl } from '../../utils/cloudinary'
 
 const HomePage: React.FC = () => {
   const { pets, getAllPets } = usePets()
@@ -26,53 +26,43 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="page-enter">
-      <section className="bg-secondary-50 relative overflow-hidden">
-        <div className="container py-20 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="font-display text-5xl font-bold text-primary mb-4">
-                Find Your Perfect
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-primary-50 to-secondary-50">
+        <div className="container py-20">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-12">
+            <div className="md:w-1/2">
+              <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-slate-900 mb-4">
+                Find your
                 <br />
-                <span className="text-primary-600">Furry Companion</span>
-                <span className="text-3xl ml-2">🐾</span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400">perfect companion</span>
               </h1>
-              <p className="text-lg text-text-secondary mb-8">
-                Give a loving home to a dog or cat in need. Browse our available pets, learn about pet care, and start your adoption journey today.
+              <p className="text-lg text-slate-600 mb-8">
+                Browse adoptable dogs and cats, learn about pet care, and start the adoption process with confidence.
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 <Link to="/adopt">
-                  <Button variant="primary" size="lg">
-                    Adopt Now
-                  </Button>
+                  <Button variant="primary" size="lg">Adopt Now</Button>
                 </Link>
                 <Link to="/care-guide">
-                  <Button variant="outline" size="lg">
-                    Learn More
-                  </Button>
+                  <Button variant="outline" size="lg">Care Guide</Button>
                 </Link>
               </div>
             </div>
 
-            <div className="relative h-96">
-              <div className="w-80 h-80 rounded-full bg-primary-100 mx-auto relative">
-                <img
-                  src="https://picsum.photos/seed/hero-dog/400/400"
-                  alt="Happy pet"
-                  className="absolute inset-0 w-full h-full object-cover rounded-full"
-                />
+            <div className="md:w-1/2 flex justify-center">
+                <div className="relative w-80 h-80 rounded-3xl shadow-2xl overflow-hidden">
+                  <img src={buildCloudinaryUrl('dog-1')} alt="Happy pet" className="w-full h-full object-cover" />
+                <div className="absolute -bottom-6 -right-6 w-40 h-40 rounded-lg bg-white/80 backdrop-blur p-3 flex items-center justify-center text-sm font-medium">
+                  Meet friendly pets near you
+                </div>
               </div>
-              <div className="absolute top-10 left-10 text-6xl opacity-30 animate-float">🐾</div>
-              <div className="absolute bottom-20 right-10 text-6xl opacity-30 animate-float" style={{ animationDelay: '1s' }}>🐾</div>
             </div>
           </div>
         </div>
-
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-primary-100 rounded-full opacity-50" />
       </section>
 
-      <section className="bg-white py-12">
+      <section className="py-12">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <StatCard number="500+" label="Pets Adopted" />
             <StatCard number="1,200+" label="Happy Families" />
             <StatCard number="50+" label="Breeds Available" />
@@ -80,28 +70,20 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">
-              Meet Our Furry Friends
-            </h2>
-            <p className="text-lg text-text-secondary">
-              Browse some of our available pets looking for their forever homes
-            </p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Meet Our Furry Friends</h2>
+            <p className="text-slate-600">Some of the pets currently looking for loving homes</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {featured.map((pet) => (
               <PetCard
                 key={pet.id}
                 pet={pet}
                 isFavourited={favourites.includes(pet.id)}
-                onFavourite={() => {
-                  if (isAuthenticated) {
-                    toggleFavourite(pet.id)
-                  }
-                }}
+                onFavourite={() => { if (isAuthenticated) toggleFavourite(pet.id) }}
                 onMeetClick={() => handleMeetClick(pet.id)}
               />
             ))}
@@ -109,21 +91,16 @@ const HomePage: React.FC = () => {
 
           <div className="text-center">
             <Link to="/adopt">
-              <Button variant="outline" size="lg">
-                View All Pets
-              </Button>
+              <Button variant="outline" size="lg">View All Pets</Button>
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="bg-secondary-50 py-20">
+      <section className="bg-secondary-50 py-16">
         <div className="container">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">
-            How It Works
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="text-3xl font-bold text-center mb-8">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <ProcessCard number="1" title="Browse" description="Explore our collection of available dogs and cats" />
             <ProcessCard number="2" title="Apply" description="Submit an adoption request with your information" />
             <ProcessCard number="3" title="Adopt" description="Get approved and bring your new friend home!" />
@@ -131,12 +108,9 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-16">
         <div className="container">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">
-            Why Choose PawBuddy?
-          </h2>
-
+          <h2 className="text-3xl font-bold text-center mb-8">Why Choose PawBuddy?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FeatureCard icon="✓" title="Verified Pets" description="All pets are health-checked and verified" />
             <FeatureCard icon="🛡️" title="Safe Process" description="Secure and transparent adoption process" />
@@ -146,43 +120,13 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <section className="bg-secondary-50 py-20">
-        <div className="container">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">
-            Happy Stories
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <TestimonialCard
-              name="Sarah Johnson"
-              text="Finding Max through PawBuddy was the best decision! He's brought so much joy to our family."
-              rating={5}
-            />
-            <TestimonialCard
-              name="Michael Chen"
-              text="The team was incredibly helpful throughout the entire adoption process. Highly recommended!"
-              rating={5}
-            />
-            <TestimonialCard
-              name="Emma Wilson"
-              text="Luna is the perfect companion. PawBuddy made everything so easy and stress-free."
-              rating={5}
-            />
-          </div>
-        </div>
-      </section>
-
       <section className="bg-primary-600 text-white py-16">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Stay Updated
-            </h2>
-            <p className="mb-8">
-              Subscribe to our newsletter for new pet arrivals and adoption tips
-            </p>
-            <div className="flex gap-4 max-w-md mx-auto">
-              <Input id="newsletter-email" type="email" placeholder="Enter your email" aria-label="Email for newsletter" className="flex-1 rounded-full" />
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">Stay Updated</h2>
+            <p className="mb-6 text-slate-100">Subscribe for new arrivals, tips, and adoption stories.</p>
+            <div className="flex gap-3 max-w-md mx-auto">
+              <Input id="newsletter-email" type="email" placeholder="Enter your email" aria-label="Email for newsletter" className="flex-1 rounded-full px-4 py-2" />
               <Button variant="secondary" size="md">Subscribe</Button>
             </div>
           </div>
@@ -234,22 +178,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) =
   </Card>
 )
 
-interface TestimonialCardProps {
-  name: string
-  text: string
-  rating: number
-}
 
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, text, rating }) => (
-  <Card>
-    <div className="flex gap-1 mb-4">
-      {[...Array(rating)].map((_, index) => (
-        <AiOutlineStar key={index} size={20} className="fill-yellow-400 text-yellow-400" />
-      ))}
-    </div>
-    <p className="text-text-secondary mb-4 italic">"{text}"</p>
-    <p className="font-semibold text-primary">{name}</p>
-  </Card>
-)
 
 export default HomePage
