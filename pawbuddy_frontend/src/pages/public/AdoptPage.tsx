@@ -9,7 +9,7 @@ import { Button } from '../../components/ui/Button'
 import type { PetFilters } from '../../types'
 
 const AdoptPage: React.FC = () => {
-  const { getAllPets, filterPets, getAvailablePets } = usePets()
+  const { getAllPets, filterPets } = usePets()
   const { favourites, toggleFavourite } = useBooking()
   const { isAuthenticated } = useAuth()
 

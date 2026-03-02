@@ -2,27 +2,31 @@ import React from 'react'
 import clsx from 'clsx'
 import type { TextareaProps } from '../../types'
 
-export const Textarea: React.FC<TextareaProps> = ({
-  label,
-  error,
-  required = false,
-  rows = 4,
-  className = '',
-  id,
-  ...props
-}) => {
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
+  {
+    label,
+    error,
+    required = false,
+    rows = 4,
+    className = '',
+    id,
+    ...props
+  },
+  ref
+) {
   const generatedId = React.useId()
   const textareaId = id ?? generatedId
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-semibold text-primary mb-2">
+        <label htmlFor={textareaId} className="block text-sm font-semibold text-primary mb-2">
           {label}
           {required && <span className="text-error ml-1">*</span>}
         </label>
       )}
 
       <textarea
+        ref={ref}
         id={textareaId}
         rows={rows}
         className={clsx(
@@ -41,4 +45,6 @@ export const Textarea: React.FC<TextareaProps> = ({
       {error && <p className="text-error text-sm mt-1">{error}</p>}
     </div>
   )
-}
+})
+
+Textarea.displayName = 'Textarea'

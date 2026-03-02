@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { User, AuthState, LoginFormData, RegisterFormData } from '../types'
+import type { User, AuthState, RegisterFormData } from '../types'
 import { MOCK_USERS } from '../utils/mockData'
 import { delay } from '../utils/helpers'
 
@@ -11,17 +11,25 @@ interface AuthStore extends AuthState {
   clearError: () => void
 }
 
-export const useAuthStore = create<AuthStore>((set, get) => {
-  // Initialize from localStorage
-  const savedAuth = localStorage.getItem('pawbuddy_auth')
-  const initialState = savedAuth ? JSON.parse(savedAuth) : {
-    user: null,
-    isAuthenticated: false
+// Safe localStorage helpers
+const readSavedAuth = (): { user: User | null; isAuthenticated: boolean } => {
+  try {
+    if (typeof window === 'undefined' || !window.localStorage) return { user: null, isAuthenticated: false }
+    const raw = window.localStorage.getItem('pawbuddy_auth')
+    if (!raw) return { user: null, isAuthenticated: false }
+    const parsed = JSON.parse(raw)
+    return { user: parsed.user ?? null, isAuthenticated: !!parsed.isAuthenticated }
+  } catch {
+    return { user: null, isAuthenticated: false }
   }
+}
+
+export const useAuthStore = create<AuthStore>((set, get) => {
+  const initial = readSavedAuth()
 
   return {
-    user: initialState.user,
-    isAuthenticated: initialState.isAuthenticated,
+    user: initial.user,
+    isAuthenticated: initial.isAuthenticated,
     isLoading: false,
     error: null,
 
@@ -31,19 +39,14 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
       try {
         const user = MOCK_USERS.find(u => u.email === email)
+        if (!user) throw new Error('User not found')
+        if (user.password !== password) throw new Error('Invalid password')
 
-        if (!user) {
-          throw new Error('User not found')
-        }
-
-        if (user.password !== password) {
-          throw new Error('Invalid password')
-        }
-
-        const { password: _, ...userWithoutPassword } = user
+        const userCopy = { ...user }
+        delete (userCopy as any).password
+        const userWithoutPassword = userCopy
         const authData = { user: userWithoutPassword, isAuthenticated: true }
-
-        localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
+        try { window.localStorage.setItem('pawbuddy_auth', JSON.stringify(authData)) } catch {}
         set({ user: userWithoutPassword, isAuthenticated: true, isLoading: false })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Login failed'
@@ -57,9 +60,7 @@ export const useAuthStore = create<AuthStore>((set, get) => {
       await delay(500)
 
       try {
-        if (MOCK_USERS.find(u => u.email === formData.email)) {
-          throw new Error('Email already registered')
-        }
+        if (MOCK_USERS.find(u => u.email === formData.email)) throw new Error('Email already registered')
 
         const newUser: User = {
           id: `user-${Date.now()}`,
@@ -73,12 +74,15 @@ export const useAuthStore = create<AuthStore>((set, get) => {
           joinedDate: new Date().toISOString()
         }
 
+        // store mock password for local mock auth only
         MOCK_USERS.push({ ...newUser, password: formData.password })
 
-        const { password: _, ...userWithoutPassword } = newUser
+        const userCopy = { ...newUser }
+        delete (userCopy as any).password
+        const userWithoutPassword = userCopy
         const authData = { user: userWithoutPassword, isAuthenticated: true }
+        try { window.localStorage.setItem('pawbuddy_auth', JSON.stringify(authData)) } catch {}
 
-        localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
         set({ user: userWithoutPassword, isAuthenticated: true, isLoading: false })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Registration failed'
@@ -88,7 +92,7 @@ export const useAuthStore = create<AuthStore>((set, get) => {
     },
 
     logout: () => {
-      localStorage.removeItem('pawbuddy_auth')
+      try { window.localStorage.removeItem('pawbuddy_auth') } catch {}
       set({ user: null, isAuthenticated: false })
     },
 
@@ -102,8 +106,7 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
         const updatedUser = { ...currentUser, ...updates }
         const authData = { user: updatedUser, isAuthenticated: true }
-
-        localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
+        try { window.localStorage.setItem('pawbuddy_auth', JSON.stringify(authData)) } catch {}
         set({ user: updatedUser, isLoading: false })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Update failed'
@@ -132,7 +135,7 @@ interface UseAuthReturn {
 }
 
 export const useAuth = (): UseAuthReturn => {
-  const { user, isAuthenticated, isLoading, error, ...actions } = useAuthStore()
+  const { user, isAuthenticated, isLoading, error, login, register, logout, updateProfile, clearError } = useAuthStore()
   return {
     user,
     isAuthenticated,
@@ -140,6 +143,10 @@ export const useAuth = (): UseAuthReturn => {
     isAdopter: user?.role === 'adopter',
     isLoading,
     error,
-    ...actions
+    login,
+    register,
+    logout,
+    updateProfile,
+    clearError
   }
 }

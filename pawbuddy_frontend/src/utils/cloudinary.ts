@@ -16,7 +16,6 @@ export const openCloudinaryWidget = (
   onError?: (error: any) => void
 ): void => {
   if (!window.cloudinary) {
-    console.error('Cloudinary widget not loaded')
     onError?.('Cloudinary not available')
     return
   }
@@ -51,7 +50,6 @@ export const openCloudinaryWidget = (
     },
     (error: any, result: any) => {
       if (error) {
-        console.error('Cloudinary error:', error)
         onError?.(error)
       } else if (result && result.event === 'success') {
         onSuccess?.(result.info.secure_url)

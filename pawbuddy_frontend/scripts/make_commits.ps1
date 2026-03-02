@@ -42,16 +42,18 @@ if (Test-Path $configPath) {
 # Ensure a changelog file exists to edit for commits
 $changelog = 'CHANGELOG.md'
 if (-not (Test-Path $changelog)) {
-  @"# Changelog
-
-All notable changes to this project are documented in this file.
-
-"@ | Out-File $changelog -Encoding utf8
+  $header = "# Changelog`n`nAll notable changes to this project are documented in this file.`n`n"
+  Set-Content -Path $changelog -Value $header -Encoding utf8
 }
 
-# Make sure we're on main and up-to-date locally
-Write-Host "Checking out main and updating..."
-git checkout main
+# Make sure we're on main and up-to-date locally (create main if it doesn't exist)
+Write-Host "Checking/creating main and updating..."
+if (-not (git show-ref --verify --quiet refs/heads/main)) {
+  Write-Host "'main' branch not found locally — creating from current HEAD"
+  git checkout -b main
+} else {
+  git checkout main
+}
 try { git pull origin main } catch { Write-Host "Warning: could not pull from origin/main. Continuing locally." }
 
 if ($PushRemote -and $RemoteUrl) {

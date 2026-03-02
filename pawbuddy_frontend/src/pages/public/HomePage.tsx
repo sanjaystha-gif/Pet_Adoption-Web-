@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
+import { Input } from '../../components/ui/Input'
 import { Card } from '../../components/ui/Card'
 import { PetCard } from '../../components/pets/PetCard'
 import { usePets } from '../../context/petStore'
@@ -181,14 +182,8 @@ const HomePage: React.FC = () => {
               Subscribe to our newsletter for new pet arrivals and adoption tips
             </p>
             <div className="flex gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-full text-primary"
-              />
-              <Button variant="secondary" size="md">
-                Subscribe
-              </Button>
+              <Input id="newsletter-email" type="email" placeholder="Enter your email" aria-label="Email for newsletter" className="flex-1 rounded-full" />
+              <Button variant="secondary" size="md">Subscribe</Button>
             </div>
           </div>
         </div>

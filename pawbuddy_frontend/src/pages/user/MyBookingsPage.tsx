@@ -15,7 +15,7 @@ const MyBookingsPage: React.FC = () => {
     try {
       await cancelBooking(id)
       showToast.success('Booking canceled')
-    } catch (err) {
+    } catch {
       showToast.error('Failed to cancel')
     }
   }

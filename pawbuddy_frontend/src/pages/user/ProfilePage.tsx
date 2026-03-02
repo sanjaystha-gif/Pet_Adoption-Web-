@@ -18,7 +18,7 @@ const ProfilePage: React.FC = () => {
     try {
       await updateProfile({ name, phone, bio, city })
       showToast.success('Profile updated')
-    } catch (err) {
+    } catch {
       showToast.error('Failed to update profile')
     } finally {
       setIsSaving(false)

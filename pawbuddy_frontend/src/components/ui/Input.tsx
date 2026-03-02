@@ -2,16 +2,19 @@ import React from 'react'
 import clsx from 'clsx'
 import type { InputProps } from '../../types'
 
-export const Input: React.FC<InputProps> = ({
-  label,
-  error,
-  required = false,
-  size = 'md',
-  disabled = false,
-  className = '',
-  id,
-  ...props
-}) => {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
+  {
+    label,
+    error,
+    required = false,
+    size = 'md',
+    disabled = false,
+    className = '',
+    id,
+    ...props
+  },
+  ref
+) {
   const sizes: Record<string, string> = {
     sm: 'px-3 py-2 text-sm',
     md: 'px-4 py-3 text-base',
@@ -24,13 +27,14 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-semibold text-primary mb-2">
+        <label htmlFor={inputId} className="block text-sm font-semibold text-primary mb-2">
           {label}
           {required && <span className="text-error ml-1">*</span>}
         </label>
       )}
 
       <input
+        ref={ref}
         className={clsx(
           'w-full border-2 border-border rounded-lg transition-all duration-300',
           'focus:border-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-100',
@@ -50,4 +54,6 @@ export const Input: React.FC<InputProps> = ({
       {error && <p className="text-error text-sm mt-1">{error}</p>}
     </div>
   )
-}
+})
+
+Input.displayName = 'Input'

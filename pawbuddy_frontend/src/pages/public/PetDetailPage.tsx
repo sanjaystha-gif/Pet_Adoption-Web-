@@ -4,6 +4,8 @@ import { usePets } from '../../context/petStore'
 import { useAuth } from '../../context/authStore'
 import { Button } from '../../components/ui/Button'
 import { Modal } from '../../components/ui/Modal'
+import { Input } from '../../components/ui/Input'
+import { Textarea } from '../../components/ui/Textarea'
 import { useBooking } from '../../context/bookingStore'
 import { showToast } from '../../components/ui/Toast'
 
@@ -41,7 +43,7 @@ const PetDetailPage: React.FC = () => {
 
       setModalOpen(false)
       showToast.success('Adoption request submitted')
-    } catch (err) {
+    } catch {
       showToast.error('Failed to submit request')
     }
   }
@@ -89,11 +91,19 @@ const PetDetailPage: React.FC = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title={`Adoption request for ${pet.name}`}>
         <div className="space-y-4">
-          <label className="block text-sm">Phone</label>
-          <input className="w-full border p-2 rounded" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <Input
+            id="booking-phone"
+            label="Phone"
+            value={phone}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone(e.target.value)}
+          />
 
-          <label className="block text-sm">Message</label>
-          <textarea className="w-full border p-2 rounded" value={message} onChange={(e) => setMessage(e.target.value)} />
+          <Textarea
+            id="booking-message"
+            label="Message"
+            value={message}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
+          />
 
           <div className="flex gap-2 justify-end mt-4">
             <Button variant="outline" onClick={() => setModalOpen(false)}>Cancel</Button>
