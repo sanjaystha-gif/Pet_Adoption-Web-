@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import type { Pet, PetFormData } from '../../types'
 import { usePets } from '../../context/petStore'
 import { Card } from '../../components/ui/Card'
@@ -7,8 +7,23 @@ import { Modal } from '../../components/ui/Modal'
 import { Input } from '../../components/ui/Input'
 import { Select } from '../../components/ui/Select'
 import { Textarea } from '../../components/ui/Textarea'
+import { Badge } from '../../components/ui/Badge'
 import { showToast } from '../../components/ui/Toast'
 import { openCloudinaryWidget } from '../../utils/cloudinary'
+import { FiMapPin } from 'react-icons/fi'
+
+const commonBreeds = [
+  'Golden Retriever', 'Labrador Retriever', 'German Shepherd', 'Beagle', 'Pug', 'Dachshund',
+  'Persian', 'Siamese', 'British Shorthair', 'Maine Coon', 'Calico', 'Mixed Breed'
+]
+
+const commonColors = [
+  'Black', 'White', 'Brown', 'Golden', 'Gray', 'Orange', 'Cream', 'Tan', 'Spotted', 'Striped'
+]
+
+const commonLocations = [
+  'Kathmandu', 'Pokhara', 'Lalitpur', 'Bhaktapur', 'Chitwan', 'Biratnagar', 'Butwal', 'Dharan'
+]
 
 const ManagePetsPage: React.FC = () => {
   const { getAllPets, addPet, updatePet, deletePet } = usePets()
@@ -36,6 +51,21 @@ const ManagePetsPage: React.FC = () => {
   const [personalityInput, setPersonalityInput] = useState('')
   const [imageUrlInput, setImageUrlInput] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const breedOptions = useMemo(() => {
+    const unique = Array.from(new Set([...commonBreeds, ...pets.map((pet) => pet.breed), form.breed].filter(Boolean)))
+    return unique.sort().map((breed) => ({ value: breed, label: breed }))
+  }, [pets, form.breed])
+
+  const colorOptions = useMemo(() => {
+    const unique = Array.from(new Set([...commonColors, ...pets.map((pet) => pet.color), form.color].filter(Boolean)))
+    return unique.sort().map((color) => ({ value: color, label: color }))
+  }, [pets, form.color])
+
+  const locationOptions = useMemo(() => {
+    const unique = Array.from(new Set([...commonLocations, ...pets.map((pet) => pet.location), form.location].filter(Boolean)))
+    return unique.sort().map((location) => ({ value: location, label: location }))
+  }, [pets, form.location])
 
   const resetForm = () => {
     setForm({
@@ -186,22 +216,57 @@ const ManagePetsPage: React.FC = () => {
 
   return (
     <div className="container py-12">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Manage Pets</h1>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl font-black text-gray-900">Manage Pets</h1>
+          <p className="text-gray-600 mt-1">Create and manage pets with the same card details shown on public pages.</p>
+        </div>
         <Button onClick={handleOpenModal}>Add New Pet</Button>
       </div>
 
-      <div className="grid gap-4">
-        {pets.map(p => (
-          <Card key={p.id} className="p-4 flex items-center justify-between">
-            <div>
-              <p className="font-semibold">{p.name}</p>
-              <p className="text-sm text-text-secondary">{p.breed} • {p.ageDisplay}</p>
-              <p className="text-xs text-text-secondary mt-1 capitalize">{p.status} • {p.location}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {pets.map((pet) => (
+          <Card key={pet.id} className="overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+            <div className="aspect-[4/3] bg-gradient-to-br from-orange-50 to-purple-50">
+              <img
+                src={pet.images?.[0] || 'https://picsum.photos/seed/pet/800/600'}
+                alt={pet.name}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => handleOpenEditModal(p)}>Edit</Button>
-              <Button variant="danger" size="sm" onClick={() => handleDelete(p)}>Delete</Button>
+
+            <div className="p-5 space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">{pet.name}</h3>
+                  <p className="text-sm text-gray-500">{pet.breed} • {pet.ageDisplay}</p>
+                </div>
+                <Badge
+                  variant={pet.status === 'available' ? 'success' : pet.status === 'pending' ? 'warning' : 'error'}
+                  size="sm"
+                >
+                  {pet.status.charAt(0).toUpperCase() + pet.status.slice(1)}
+                </Badge>
+              </div>
+
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge variant="secondary" size="sm">{pet.gender}</Badge>
+                <Badge variant="secondary" size="sm">{pet.size}</Badge>
+                {pet.vaccinated && <Badge variant="info" size="sm">Vaccinated</Badge>}
+                {pet.neutered && <Badge variant="info" size="sm">Neutered</Badge>}
+              </div>
+
+              <p className="text-sm text-gray-600 flex items-center gap-2">
+                <FiMapPin size={14} />
+                {pet.location}
+              </p>
+
+              <p className="text-sm text-gray-700 line-clamp-2">{pet.description}</p>
+
+              <div className="flex gap-2 pt-2">
+                <Button variant="outline" size="sm" onClick={() => handleOpenEditModal(pet)}>Edit</Button>
+                <Button variant="danger" size="sm" onClick={() => handleDelete(pet)}>Delete</Button>
+              </div>
             </div>
           </Card>
         ))}
@@ -211,7 +276,14 @@ const ManagePetsPage: React.FC = () => {
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input label="Name" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required />
-            <Input label="Breed" value={form.breed} onChange={(e) => setForm((f) => ({ ...f, breed: e.target.value }))} required />
+            <Select
+              label="Breed"
+              value={form.breed}
+              onChange={(e) => setForm((f) => ({ ...f, breed: e.target.value }))}
+              options={breedOptions}
+              placeholder="Select breed"
+              required
+            />
 
             <Select
               label="Type"
@@ -265,8 +337,22 @@ const ManagePetsPage: React.FC = () => {
             />
 
             <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} required />
-            <Input label="Color" value={form.color} onChange={(e) => setForm((f) => ({ ...f, color: e.target.value }))} required />
-            <Input label="Location" value={form.location} onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))} required />
+            <Select
+              label="Color"
+              value={form.color}
+              onChange={(e) => setForm((f) => ({ ...f, color: e.target.value }))}
+              options={colorOptions}
+              placeholder="Select color"
+              required
+            />
+            <Select
+              label="Location"
+              value={form.location}
+              onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
+              options={locationOptions}
+              placeholder="Select location"
+              required
+            />
           </div>
 
           <Textarea

@@ -16,7 +16,11 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const allPets = getAllPets()
-    setFeatured(allPets.filter((pet) => pet.status === 'available').slice(0, 6))
+    const latestAvailable = allPets
+      .filter((pet) => pet.status === 'available')
+      .sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime())
+      .slice(0, 6)
+    setFeatured(latestAvailable)
   }, [pets, getAllPets])
 
   const handleMeetClick = (_petId: string) => {
