@@ -113,7 +113,7 @@ const petSchema = new Schema<IPet>(
   {
     timestamps: true,
     toJSON: {
-      transform: (doc, ret) => {
+      transform: (doc: any, ret: any) => {
         ret.id = ret._id.toString();
         ret.ageDisplay = computeAgeDisplay(ret.age);
         delete ret._id;

@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 import { env } from '../config/environment.js';
 import { AuthPayload } from '../types/index.js';
@@ -9,7 +9,7 @@ import { AuthPayload } from '../types/index.js';
 export const generateAccessToken = (payload: AuthPayload): string => {
   return jwt.sign(payload, env.JWT_ACCESS_SECRET, {
     expiresIn: env.ACCESS_TOKEN_EXPIRES,
-  });
+  } as any);
 };
 
 /**
@@ -18,7 +18,7 @@ export const generateAccessToken = (payload: AuthPayload): string => {
 export const generateRefreshToken = (userId: string): string => {
   return jwt.sign({ userId }, env.JWT_REFRESH_SECRET, {
     expiresIn: env.REFRESH_TOKEN_EXPIRES,
-  });
+  } as any);
 };
 
 /**

@@ -278,9 +278,9 @@ const seedDatabase = async () => {
 
     // Create some bookings
     const booking1 = await Booking.create({
-      petId: pets[0]._id.toString(),
+      petId: pets[0]!._id.toString(),
       petName: 'Max',
-      petImage: pets[0].images[0],
+      petImage: pets[0]!.images[0],
       adopterId: adopter1._id.toString(),
       adopterName: 'John Smith',
       adopterEmail: 'john@example.com',
@@ -300,17 +300,17 @@ const seedDatabase = async () => {
     // Create some favourites
     await Favourite.create({
       userId: adopter1._id.toString(),
-      petId: pets[2]._id.toString(),
+      petId: pets[2]!._id.toString(),
     });
 
     await Favourite.create({
       userId: adopter2._id.toString(),
-      petId: pets[1]._id.toString(),
+      petId: pets[1]!._id.toString(),
     });
 
     await Favourite.create({
       userId: adopter2._id.toString(),
-      petId: pets[3]._id.toString(),
+      petId: pets[3]!._id.toString(),
     });
     console.log('✅ Created sample favourites');
 

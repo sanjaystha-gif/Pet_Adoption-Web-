@@ -67,5 +67,3 @@ export const sendPaginated = <T>(
 
   res.status(statusCode).json(response);
 };
-  res.status(200).json(response);
-};
