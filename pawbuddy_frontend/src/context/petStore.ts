@@ -3,6 +3,15 @@ import type { Pet, PetFilters, PetFormData } from '../types'
 import { MOCK_PETS } from '../utils/mockData'
 import { delay, generateId } from '../utils/helpers'
 
+const formatAgeDisplayFromMonths = (months: number): string => {
+  if (!Number.isFinite(months) || months <= 0) return 'Unknown age'
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'}`
+
+  const years = months / 12
+  const rounded = Math.round(years * 10) / 10
+  return `${rounded} year${rounded === 1 ? '' : 's'}`
+}
+
 interface PetStore {
   pets: Pet[]
   isLoading: boolean
@@ -63,7 +72,7 @@ export const usePetStore = create<PetStore>((set, get) => {
           id: generateId('pet-'),
           ...petData,
           // derived fields
-          ageDisplay: typeof petData.age === 'number' ? `${Math.floor(petData.age / 12)} yr${Math.floor(petData.age / 12) !== 1 ? 's' : ''}` : `${petData.age}`,
+          ageDisplay: formatAgeDisplayFromMonths(Number(petData.age)),
           createdBy: 'system',
           postedDate: new Date().toISOString()
         }
@@ -88,7 +97,15 @@ export const usePetStore = create<PetStore>((set, get) => {
       try {
         set(state => ({
           pets: state.pets.map(pet =>
-            pet.id === petId ? { ...pet, ...updates } : pet
+            pet.id === petId
+              ? {
+                  ...pet,
+                  ...updates,
+                  ageDisplay: typeof updates.age === 'number'
+                    ? formatAgeDisplayFromMonths(updates.age)
+                    : pet.ageDisplay
+                }
+              : pet
           ),
           isLoading: false
         }))
