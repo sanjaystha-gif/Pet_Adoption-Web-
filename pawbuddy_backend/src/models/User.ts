@@ -76,7 +76,6 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// Index for email uniqueness
-userSchema.index({ email: 1 }, { unique: true });
+// Email uniqueness index is already defined in schema with unique: true
 
 export const User = mongoose.model<IUser>('User', userSchema);

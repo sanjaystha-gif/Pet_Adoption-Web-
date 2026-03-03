@@ -32,6 +32,6 @@ const refreshTokenSchema = new Schema<IRefreshToken>(
 
 // Index for userId for quick lookup and cleanup
 refreshTokenSchema.index({ userId: 1 });
-refreshTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 }); // TTL index
+// TTL index is already defined in schema with expires: 0
 
 export const RefreshToken = mongoose.model<IRefreshToken>('RefreshToken', refreshTokenSchema);
