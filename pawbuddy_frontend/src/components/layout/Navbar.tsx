@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { AiOutlineMenu, AiOutlineClose, AiOutlineBell } from 'react-icons/ai'
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
 import { useAuth } from '../../context/authStore'
 import { Avatar } from '../ui/Avatar'
 import { getInitials } from '../../utils/helpers'
@@ -48,15 +48,15 @@ export const Navbar: React.FC = () => {
   ]
 
   return (
-    <nav className="sticky top-0 z-40 nav-glass shadow-sm border-b border-gray-100">
-      <div className="container flex items-center justify-between h-20">
+    <nav className="sticky top-0 z-40 nav-glass shadow-sm">
+      <div className="container flex items-center justify-between h-16">
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 font-display text-2xl font-bold"
+          className="flex items-center gap-2 text-2xl font-bold"
         >
-          <span className="text-primary-600">🐾 Paw</span>
-          <span className="text-secondary-700">Buddy</span>
+          <span className="text-primary">🐾 Paw</span>
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Buddy</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -65,32 +65,17 @@ export const Navbar: React.FC = () => {
             <Link
               key={link.href}
               to={link.href}
-              className="text-sm text-gray-700 hover:text-primary-600 font-medium transition-colors"
+              className="text-gray-700 hover:text-primary font-medium transition-colors"
             >
               {link.label}
             </Link>
           ))}
-
-          <div className="ml-4">
-            <input
-              type="search"
-              aria-label="Search pets"
-              placeholder="Search pets, breeds or cities"
-              className="px-3 py-2 rounded-full border border-gray-200 w-64 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-primary-600"
-            />
-          </div>
         </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
           {isAuthenticated ? (
             <>
-              {/* Notification Bell */}
-              <button aria-label="Notifications" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <AiOutlineBell size={24} className="text-text-secondary" aria-hidden="true" />
-                <span className="absolute top-1 right-1 w-3 h-3 bg-error rounded-full" aria-hidden="true" />
-              </button>
-
               {/* User Dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -98,7 +83,7 @@ export const Navbar: React.FC = () => {
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
                   aria-controls="user-menu"
-                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md transition-colors"
                 >
                   <Avatar
                     src={user?.avatar ?? undefined}
@@ -109,10 +94,10 @@ export const Navbar: React.FC = () => {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div id="user-menu" role="menu" className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
-                    <div className="px-4 py-3 border-b border-border">
-                      <p className="font-semibold text-primary">{user?.name}</p>
-                      <p className="text-sm text-text-secondary">{user?.email}</p>
+                  <div id="user-menu" role="menu" className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-200">
+                    <div className="px-4 py-3 border-b border-gray-200">
+                      <p className="font-semibold text-gray-900">{user?.name}</p>
+                      <p className="text-sm text-gray-500">{user?.email}</p>
                     </div>
 
                     {isAdmin ? (
@@ -174,7 +159,7 @@ export const Navbar: React.FC = () => {
 
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-error border-t border-border transition-colors"
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-red-600 border-t border-gray-200 transition-colors"
                     >
                       Logout
                     </button>
@@ -184,10 +169,10 @@ export const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="hidden sm:block text-sm text-gray-700 font-medium hover:text-primary-600">
+              <Link to="/login" className="hidden sm:block text-gray-700 font-medium hover:text-primary">
                 Login
               </Link>
-              <Link to="/register" className="hidden sm:block btn-primary text-sm px-5 py-2 ml-3">
+              <Link to="/register" className="hidden sm:block btn-primary px-5 py-2">
                 Register
               </Link>
             </>
@@ -212,12 +197,12 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div id="mobile-menu" className="md:hidden bg-secondary-50 border-t border-border p-4 space-y-3">
+        <div id="mobile-menu" className="md:hidden bg-gray-50 border-t border-gray-200 p-4 space-y-3">
           {publicNavLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className="block text-text-secondary hover:text-primary-600 font-medium py-2"
+              className="block text-gray-700 hover:text-primary font-medium py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.label}
@@ -225,16 +210,16 @@ export const Navbar: React.FC = () => {
           ))}
 
           {!isAuthenticated && (
-            <div className="flex gap-2 pt-4 border-t border-border">
+            <div className="flex gap-2 pt-4 border-t border-gray-200">
               <Link
                 to="/login"
-                className="flex-1 text-center py-2 border-2 border-primary-600 text-primary-600 rounded-full font-semibold"
+                className="flex-1 text-center py-2 border-2 border-primary text-primary rounded-md font-semibold"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="flex-1 text-center py-2 bg-primary-600 text-white rounded-full font-semibold"
+                className="flex-1 text-center py-2 bg-primary text-white rounded-md font-semibold"
               >
                 Register
               </Link>

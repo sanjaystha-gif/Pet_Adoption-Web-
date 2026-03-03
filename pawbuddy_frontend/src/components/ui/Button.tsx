@@ -13,21 +13,21 @@ export const Button: React.FC<ButtonProps> = ({
   type = 'button',
   ...props
 }) => {
-  const baseStyles = 'font-semibold transition-all duration-300 flex items-center justify-center gap-2'
+  const baseStyles = 'font-semibold transition-all duration-200 flex items-center justify-center gap-2'
 
   const variants: Record<string, string> = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 active:scale-95 disabled:opacity-50',
-    outline: 'border-2 border-primary-600 text-primary-600 hover:bg-primary-50',
-    ghost: 'text-primary-600 hover:bg-primary-50',
-    danger: 'bg-error text-white hover:bg-red-600 active:scale-95',
-    success: 'bg-accent text-white hover:bg-green-600 active:scale-95',
-    secondary: 'bg-secondary-700 text-white hover:bg-secondary-800 active:scale-95'
+    primary: 'bg-primary text-white hover:bg-primary-dark shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50',
+    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-white hover:-translate-y-0.5 hover:shadow-md',
+    ghost: 'text-primary hover:bg-orange-50',
+    danger: 'bg-error text-white hover:bg-red-600 shadow-md hover:shadow-lg',
+    success: 'bg-success text-white hover:bg-green-600 shadow-md hover:shadow-lg',
+    secondary: 'bg-accent text-white hover:bg-purple-700 shadow-md hover:shadow-lg'
   }
 
   const sizes: Record<string, string> = {
-    sm: 'px-4 py-2 text-sm rounded-full',
-    md: 'px-6 py-3 text-base rounded-full',
-    lg: 'px-8 py-4 text-lg rounded-full'
+    sm: 'px-5 py-2 text-sm rounded-xl',
+    md: 'px-7 py-2.5 text-base rounded-xl',
+    lg: 'px-9 py-3.5 text-lg rounded-xl'
   }
 
   return (

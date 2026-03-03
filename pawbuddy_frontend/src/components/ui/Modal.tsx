@@ -51,24 +51,35 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
         ref={dialogRef}
         tabIndex={-1}
         className={clsx(
-          'relative bg-card rounded-2xl shadow-2xl p-8 w-full mx-4',
+          'relative bg-white rounded-2xl shadow-2xl p-8 w-full mx-4',
           sizes[size],
           'transform transition-all duration-300 scale-100 opacity-100',
           className
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          {title && <h2 id={titleId} className="text-2xl font-bold text-primary">{title}</h2>}
+        {title ? (
+          <div className="flex items-center justify-between mb-6">
+            <h2 id={titleId} className="text-2xl font-bold text-primary">{title}</h2>
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-text-secondary hover:text-primary transition-colors"
+              aria-label="Close modal"
+            >
+              <AiOutlineClose size={24} />
+            </button>
+          </div>
+        ) : (
           <button
             type="button"
             onClick={onClose}
-            className="text-text-secondary hover:text-primary transition-colors"
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             aria-label="Close modal"
           >
             <AiOutlineClose size={24} />
           </button>
-        </div>
+        )}
 
         {/* Content */}
         <div>{children}</div>

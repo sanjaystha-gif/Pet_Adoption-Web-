@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { FiMapPin } from 'react-icons/fi'
 import { Badge } from '../ui/Badge'
@@ -32,15 +33,15 @@ export const PetCard: React.FC<PetCardProps> = ({
       aria-label={`${pet.name} card`}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="bg-white rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden h-full flex flex-col"
+      className="bg-white rounded-xl border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden h-full flex flex-col"
     >
       {/* Image */}
-      <div className="w-full bg-gray-100">
+      <div className="w-full bg-gradient-to-br from-orange-50 to-purple-50">
         <div className="aspect-[4/3] w-full overflow-hidden">
           <img
             src={pet.images?.[0] || 'https://picsum.photos/seed/pet/800/600'}
             alt={pet.name}
-            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
         </div>
       </div>
@@ -80,20 +81,21 @@ export const PetCard: React.FC<PetCardProps> = ({
 
         <div className="flex items-center justify-between gap-3">
           <div className="flex gap-2">
-            <Button onClick={() => onMeetClick?.(pet.id)} variant="primary" size="sm" className="btn-gradient">Meet Me</Button>
-            <Button onClick={() => onFavourite?.(pet.id)} variant="outline" size="sm">Message</Button>
+            <Link to={`/pet/${pet.id}`} onClick={() => onMeetClick?.(pet.id)}>
+              <Button variant="primary" size="sm">View Details</Button>
+            </Link>
           </div>
 
           <button
             onClick={handleFavouriteClick}
-            className="p-2 rounded-full bg-white border border-gray-100 shadow-sm hover:scale-105 transition-transform"
+            className="p-2.5 rounded-lg bg-gradient-to-br from-pink-50 to-red-50 hover:from-pink-100 hover:to-red-100 transition-all duration-200 hover:scale-110"
             aria-label={isFavourited ? 'Remove from favourites' : 'Add to favourites'}
             aria-pressed={isFavourited}
           >
             {isFavourited ? (
-              <AiFillHeart size={18} className="text-red-500" aria-hidden="true" />
+              <AiFillHeart size={20} className="text-red-500" aria-hidden="true" />
             ) : (
-              <AiOutlineHeart size={18} className="text-gray-400" aria-hidden="true" />
+              <AiOutlineHeart size={20} className="text-gray-400" aria-hidden="true" />
             )}
           </button>
         </div>

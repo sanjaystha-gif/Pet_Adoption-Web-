@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
-import { Card } from '../../components/ui/Card'
 import { PetCard } from '../../components/pets/PetCard'
 import { usePets } from '../../context/petStore'
 import { useBooking } from '../../context/bookingStore'
 import { useAuth } from '../../context/authStore'
 import type { Pet } from '../../types'
-import { AiOutlineStar } from 'react-icons/ai'
 import { buildCloudinaryUrl } from '../../utils/cloudinary'
 
 const HomePage: React.FC = () => {
@@ -25,64 +23,48 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <div className="page-enter">
-      <section className="relative overflow-hidden">
-        <div className="container py-24">
+    <div>
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-orange-50 via-white to-purple-50 py-20 relative overflow-hidden" style={{backgroundImage: 'url(https://res.cloudinary.com/dthfai8ky/image/upload/v1772459205/Ellipse_23_fptx65.png)', backgroundPosition: '70% center', backgroundRepeat: 'no-repeat', backgroundSize: '50%'}}>
+        <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="font-display text-5xl md:text-6xl font-bold mb-6">
-                Find Your
-                <br />
-                <span className="logo-gradient">perfect companion</span>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                Find Your <span className="text-primary">Perfect Pet</span>
               </h1>
-              <p className="text-lg text-gray-600 mb-8">
-                Browse adoptable dogs and cats, learn about pet care, and start the adoption process with confidence.
+              <p className="text-lg text-gray-600 mb-6">
+                Browse adorable dogs and cats looking for loving homes. Start your adoption journey today.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex gap-3">
                 <Link to="/adopt">
-                  <Button variant="primary" size="lg">Adopt Now</Button>
+                  <Button variant="primary" size="lg">Browse Pets</Button>
                 </Link>
                 <Link to="/care-guide">
-                  <Button variant="outline" size="lg">Care Guide</Button>
+                  <Button variant="outline" size="lg">Learn More</Button>
                 </Link>
               </div>
-              <div className="mt-6 text-sm text-gray-500">Trusted by shelters and adopters across the country.</div>
             </div>
 
             <div className="flex justify-center">
-              <div className="relative w-full max-w-md rounded-3xl overflow-hidden shadow-lg">
-                <img src={buildCloudinaryUrl('dog-1')} alt="Happy pet" className="w-full h-[420px] object-cover" />
-                <div className="absolute -bottom-6 -right-6 w-44 h-44 rounded-lg bg-white/80 backdrop-blur p-3 flex items-center justify-center text-sm font-medium">
-                  Meet friendly pets near you
-                </div>
-              </div>
+              <img src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772459162/image_167_4_ovm61a.png" alt="Happy pet" className="w-full max-w-md h-[400px] object-contain" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-12">
+      {/* Available Pets */}
+      <section className="py-16">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <StatCard number="500+" label="Pets Adopted" />
-            <StatCard number="1,200+" label="Happy Families" />
-            <StatCard number="50+" label="Breeds Available" />
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20">
-        <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4">
-              Meet Our Furry Friends
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-3">
+              Available Pets
             </h2>
-            <p className="text-lg text-text-secondary">
-              Browse some of our available pets looking for their forever homes
+            <p className="text-lg text-gray-600">
+              Meet some of our pets looking for their forever homes
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {featured.map((pet) => (
               <PetCard
                 key={pet.id}
@@ -108,80 +90,28 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <section className="bg-secondary-50 py-20">
+      {/* How It Works */}
+      <section className="bg-gradient-to-br from-purple-50 via-white to-orange-50 py-16">
         <div className="container">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">
+          <h2 className="text-3xl font-bold text-center mb-12">
             How It Works
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <ProcessCard number="1" title="Browse" description="Explore our collection of available dogs and cats" />
-            <ProcessCard number="2" title="Apply" description="Submit an adoption request with your information" />
-            <ProcessCard number="3" title="Adopt" description="Get approved and bring your new friend home!" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <ProcessCard number="1" title="Browse Pets" description="Find your perfect companion from our available pets" />
+            <ProcessCard number="2" title="Submit Request" description="Fill out an adoption application form" />
+            <ProcessCard number="3" title="Take Home" description="Meet your pet and complete the adoption" />
           </div>
         </div>
       </section>
 
-      <section className="py-20">
+      {/* Stats */}
+      <section className="py-16">
         <div className="container">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">
-            Why Choose PawBuddy?
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FeatureCard icon="✓" title="Verified Pets" description="All pets are health-checked and verified" />
-            <FeatureCard icon="🛡️" title="Safe Process" description="Secure and transparent adoption process" />
-            <FeatureCard icon="👥" title="Support Team" description="Expert support throughout your journey" />
-            <FeatureCard icon="💬" title="Free Consultation" description="Get expert advice before adoption" />
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-secondary-50 py-20">
-        <div className="container">
-          <h2 className="text-4xl font-bold text-primary text-center mb-16">
-            Happy Stories
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <TestimonialCard
-              name="Sarah Johnson"
-              text="Finding Max through PawBuddy was the best decision! He's brought so much joy to our family."
-              rating={5}
-            />
-            <TestimonialCard
-              name="Michael Chen"
-              text="The team was incredibly helpful throughout the entire adoption process. Highly recommended!"
-              rating={5}
-            />
-            <TestimonialCard
-              name="Emma Wilson"
-              text="Luna is the perfect companion. PawBuddy made everything so easy and stress-free."
-              rating={5}
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-primary-600 text-white py-16">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Stay Updated
-            </h2>
-            <p className="mb-8">
-              Subscribe to our newsletter for new pet arrivals and adoption tips
-            </p>
-            <div className="flex gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-full text-primary"
-              />
-              <Button variant="secondary" size="md">
-                Subscribe
-              </Button>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+            <StatCard number="500+" label="Pets Adopted" />
+            <StatCard number="1,200+" label="Happy Families" />
+            <StatCard number="50+" label="Partner Shelters" />
           </div>
         </div>
       </section>
@@ -196,8 +126,8 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ number, label }) => (
   <div className="text-center">
-    <p className="text-4xl font-bold text-primary-600 mb-2">{number}</p>
-    <p className="text-lg text-text-secondary">{label}</p>
+    <p className="text-4xl font-bold text-primary mb-2">{number}</p>
+    <p className="text-gray-600">{label}</p>
   </div>
 )
 
@@ -208,45 +138,13 @@ interface ProcessCardProps {
 }
 
 const ProcessCard: React.FC<ProcessCardProps> = ({ number, title, description }) => (
-  <Card className="text-center">
-    <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-      <span className="text-2xl font-bold text-primary-600">{number}</span>
+  <div className="text-center">
+    <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+      <span className="text-2xl font-bold">{number}</span>
     </div>
-    <h3 className="text-xl font-bold text-primary mb-2">{title}</h3>
-    <p className="text-text-secondary">{description}</p>
-  </Card>
-)
-
-interface FeatureCardProps {
-  icon: string
-  title: string
-  description: string
-}
-
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => (
-  <Card>
-    <div className="text-4xl mb-4">{icon}</div>
-    <h3 className="text-lg font-bold text-primary mb-2">{title}</h3>
-    <p className="text-text-secondary text-sm">{description}</p>
-  </Card>
-)
-
-interface TestimonialCardProps {
-  name: string
-  text: string
-  rating: number
-}
-
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ name, text, rating }) => (
-  <Card>
-    <div className="flex gap-1 mb-4">
-      {[...Array(rating)].map((_, index) => (
-        <AiOutlineStar key={index} size={20} className="fill-yellow-400 text-yellow-400" />
-      ))}
-    </div>
-    <p className="text-text-secondary mb-4 italic">"{text}"</p>
-    <p className="font-semibold text-primary">{name}</p>
-  </Card>
+    <h3 className="text-xl font-bold mb-2">{title}</h3>
+    <p className="text-gray-600">{description}</p>
+  </div>
 )
 
 export default HomePage
