@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-50 via-white to-purple-50 py-20 relative overflow-hidden" style={{backgroundImage: 'url(https://res.cloudinary.com/dthfai8ky/image/upload/v1772459205/Ellipse_23_fptx65.png)', backgroundPosition: '70% center', backgroundRepeat: 'no-repeat', backgroundSize: '50%'}}>
+      <section className="bg-gradient-to-br from-orange-50 via-white to-purple-50 py-20 relative overflow-hidden" style={{backgroundImage: 'url(https://res.cloudinary.com/dthfai8ky/image/upload/v1772459205/Ellipse_23_fptx65.png)', backgroundPosition: '70% center', backgroundRepeat: 'no-repeat', backgroundSize: '30%'}}>
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
