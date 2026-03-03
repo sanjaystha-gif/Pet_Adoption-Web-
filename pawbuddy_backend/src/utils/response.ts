@@ -1,6 +1,9 @@
 import { Response } from 'express';
-import { ApiResponse, PaginatedResponse } from '../types/index.js';
+import { ApiResponse, PaginatedApiResponse, PaginatedData } from '../types/index.js';
 
+/**
+ * Send a successful response
+ */
 export const sendSuccess = <T>(
   res: Response,
   data: T,
@@ -8,45 +11,61 @@ export const sendSuccess = <T>(
   statusCode = 200
 ): void => {
   const response: ApiResponse<T> = {
-    status: 'success',
-    message,
+    success: true,
     data,
+    message: message || undefined,
   };
   res.status(statusCode).json(response);
 };
 
+/**
+ * Send an error response
+ */
 export const sendError = (
   res: Response,
-  message = 'Error',
-  errors?: any[],
+  error: string,
+  message?: string,
   statusCode = 500
 ): void => {
   const response: ApiResponse = {
-    status: 'error',
-    message,
-    ...(errors && { errors }),
+    success: false,
+    error,
+    message: message || error,
   };
   res.status(statusCode).json(response);
 };
 
+/**
+ * Send a paginated response
+ */
 export const sendPaginated = <T>(
   res: Response,
-  data: T,
+  items: T[],
   pagination: {
     page: number;
-    limit: number;
+    pageSize: number;
     total: number;
   },
-  message = 'Success'
+  message = 'Success',
+  statusCode = 200
 ): void => {
-  const response: PaginatedResponse<T> = {
-    status: 'success',
-    message,
-    data,
+  const data: PaginatedData<T> = {
+    items,
     pagination: {
-      ...pagination,
-      totalPages: Math.ceil(pagination.total / pagination.limit),
+      page: pagination.page,
+      pageSize: pagination.pageSize,
+      total: pagination.total,
+      totalPages: Math.ceil(pagination.total / pagination.pageSize),
     },
   };
+
+  const response: PaginatedApiResponse<T> = {
+    success: true,
+    data,
+    message: message || undefined,
+  };
+
+  res.status(statusCode).json(response);
+};
   res.status(200).json(response);
 };
