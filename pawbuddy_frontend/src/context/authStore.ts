@@ -2,6 +2,40 @@ import { create } from 'zustand'
 import type { User, AuthState, LoginFormData, RegisterFormData } from '../types'
 import { MOCK_USERS } from '../utils/mockData'
 import { delay } from '../utils/helpers'
+import api from '../utils/api'
+
+const extractApiErrorMessage = (error: unknown, fallback: string): string => {
+  if (typeof error === 'object' && error !== null && 'response' in error) {
+    const maybeResponse = (error as { response?: { data?: { message?: string; error?: string } } }).response
+    const serverMessage = maybeResponse?.data?.message || maybeResponse?.data?.error
+    if (serverMessage) return serverMessage
+  }
+
+  return error instanceof Error ? error.message : fallback
+}
+
+const withDefaultAvatar = (user: User): User => {
+  if (user.avatar) return user
+  const seed = user.email || user.name || user.id || 'user'
+  return {
+    ...user,
+    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`
+  }
+}
+
+const persistAuthState = (user: User, token?: string, refreshToken?: string) => {
+  const normalizedUser = withDefaultAvatar(user)
+  const authData = { user: normalizedUser, isAuthenticated: true }
+  localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
+
+  if (token) {
+    localStorage.setItem('authToken', token)
+  }
+
+  if (refreshToken) {
+    localStorage.setItem('refreshToken', refreshToken)
+  }
+}
 
 interface AuthStore extends AuthState {
   login: (email: string, password: string) => Promise<void>
@@ -27,26 +61,46 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
     login: async (email: string, password: string) => {
       set({ isLoading: true, error: null })
-      await delay(500)
 
       try {
-        const user = MOCK_USERS.find(u => u.email === email)
+        try {
+          // Prefer backend auth so protected APIs (e.g. POST /pets) receive a valid bearer token.
+          const response = await api.post('/auth/login', { email, password })
+          const data = response.data?.data || response.data
+          const user = data?.user as User | undefined
+          const accessToken = data?.accessToken as string | undefined
+          const refreshToken = data?.refreshToken as string | undefined
 
-        if (!user) {
-          throw new Error('User not found')
+          if (!user || !accessToken) {
+            throw new Error('Invalid login response from server')
+          }
+
+          const normalizedUser = withDefaultAvatar(user)
+          persistAuthState(normalizedUser, accessToken, refreshToken)
+          set({ user: normalizedUser, isAuthenticated: true, isLoading: false })
+          return
+        } catch (apiError) {
+          // Keep existing mock-auth behavior as a fallback when backend auth is unavailable.
+          await delay(500)
+
+          const user = MOCK_USERS.find(u => u.email === email)
+
+          if (!user) {
+            const message = extractApiErrorMessage(apiError, 'User not found')
+            throw new Error(message)
+          }
+
+          if (user.password !== password) {
+            throw new Error('Invalid password')
+          }
+
+          const { password: _, ...userWithoutPassword } = user
+          const normalizedUser = withDefaultAvatar(userWithoutPassword)
+          persistAuthState(normalizedUser)
+          set({ user: normalizedUser, isAuthenticated: true, isLoading: false })
         }
-
-        if (user.password !== password) {
-          throw new Error('Invalid password')
-        }
-
-        const { password: _, ...userWithoutPassword } = user
-        const authData = { user: userWithoutPassword, isAuthenticated: true }
-
-        localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
-        set({ user: userWithoutPassword, isAuthenticated: true, isLoading: false })
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Login failed'
+        const message = extractApiErrorMessage(error, 'Login failed')
         set({ error: message, isLoading: false })
         throw error
       }
@@ -76,10 +130,9 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         MOCK_USERS.push({ ...newUser, password: formData.password })
 
         const { password: _, ...userWithoutPassword } = newUser
-        const authData = { user: userWithoutPassword, isAuthenticated: true }
-
-        localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
-        set({ user: userWithoutPassword, isAuthenticated: true, isLoading: false })
+        const normalizedUser = withDefaultAvatar(userWithoutPassword)
+        persistAuthState(normalizedUser)
+        set({ user: normalizedUser, isAuthenticated: true, isLoading: false })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Registration failed'
         set({ error: message, isLoading: false })
@@ -89,6 +142,8 @@ export const useAuthStore = create<AuthStore>((set, get) => {
 
     logout: () => {
       localStorage.removeItem('pawbuddy_auth')
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('refreshToken')
       set({ user: null, isAuthenticated: false })
     },
 
@@ -100,10 +155,10 @@ export const useAuthStore = create<AuthStore>((set, get) => {
         const currentUser = get().user
         if (!currentUser) throw new Error('Not authenticated')
 
-        const updatedUser = { ...currentUser, ...updates }
-        const authData = { user: updatedUser, isAuthenticated: true }
-
-        localStorage.setItem('pawbuddy_auth', JSON.stringify(authData))
+        const updatedUser = withDefaultAvatar({ ...currentUser, ...updates })
+        const existingToken = localStorage.getItem('authToken') || undefined
+        const existingRefreshToken = localStorage.getItem('refreshToken') || undefined
+        persistAuthState(updatedUser, existingToken, existingRefreshToken)
         set({ user: updatedUser, isLoading: false })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Update failed'

@@ -4,8 +4,6 @@ import clsx from 'clsx'
 import type { ModalProps } from '../../types'
 
 export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, className = '', size = 'md' }) => {
-  if (!isOpen) return null
-
   const sizes: Record<string, string> = {
     sm: 'max-w-sm',
     md: 'max-w-2xl',
@@ -17,22 +15,26 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
   const titleId = React.useId()
 
   React.useEffect(() => {
-    if (isOpen) {
-      // focus the dialog for accessibility
-      dialogRef.current?.focus()
-      // prevent body scroll
-      document.body.style.overflow = 'hidden'
-      const onKey = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') onClose?.()
-      }
-      document.addEventListener('keydown', onKey)
-
-      return () => {
-        document.body.style.overflow = ''
-        document.removeEventListener('keydown', onKey)
-      }
+    if (!isOpen) {
+      return
     }
-  }, [isOpen])
+
+    // focus the dialog for accessibility
+    dialogRef.current?.focus()
+    // prevent body scroll
+    document.body.style.overflow = 'hidden'
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose?.()
+    }
+    document.addEventListener('keydown', onKey)
+
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [isOpen, onClose])
+
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">

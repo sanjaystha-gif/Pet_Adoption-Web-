@@ -110,6 +110,13 @@ export const Navbar: React.FC = () => {
                           Dashboard
                         </Link>
                         <Link
+                          to="/profile"
+                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          onClick={() => setDropdownOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                        <Link
                           to="/admin/pets"
                           className="block px-4 py-2 hover:bg-gray-50 transition-colors"
                           onClick={() => setDropdownOpen(false)}

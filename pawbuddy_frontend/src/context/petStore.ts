@@ -1,7 +1,34 @@
 import { create } from 'zustand'
 import type { Pet, PetFilters, PetFormData } from '../types'
-import { MOCK_PETS } from '../utils/mockData'
-import { delay, generateId } from '../utils/helpers'
+import api from '../utils/api'
+
+const extractApiErrorMessage = (error: unknown, fallback: string): string => {
+  if (typeof error === 'object' && error !== null && 'response' in error) {
+    const maybeResponse = (error as { response?: { data?: { message?: string; error?: string } } }).response
+    const serverMessage = maybeResponse?.data?.message || maybeResponse?.data?.error
+    if (serverMessage) return serverMessage
+  }
+
+  return error instanceof Error ? error.message : fallback
+}
+
+const normalizePetListResponse = (payload: unknown): Pet[] => {
+  const envelope = payload as { data?: unknown }
+  const data = envelope?.data ?? payload
+
+  if (Array.isArray(data)) return data as Pet[]
+  if (data && typeof data === 'object' && 'items' in data && Array.isArray((data as { items?: unknown[] }).items)) {
+    return (data as { items: Pet[] }).items
+  }
+
+  return []
+}
+
+const normalizePetResponse = (payload: unknown): Pet => {
+  const envelope = payload as { data?: unknown }
+  const data = envelope?.data ?? payload
+  return data as Pet
+}
 
 const formatAgeDisplayFromMonths = (months: number): string => {
   if (!Number.isFinite(months) || months <= 0) return 'Unknown age'
@@ -32,17 +59,18 @@ interface PetStore {
 
 export const usePetStore = create<PetStore>((set, get) => {
   return {
-    pets: [...MOCK_PETS],
+    pets: [],
     isLoading: false,
     error: null,
 
     getPets: async () => {
       set({ isLoading: true, error: null })
-      await delay(300)
       try {
-        set({ isLoading: false })
+        const response = await api.get('/pets')
+        const pets = normalizePetListResponse(response.data)
+        set({ pets, isLoading: false })
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to fetch pets'
+        const message = extractApiErrorMessage(error, 'Failed to fetch pets')
         set({ error: message, isLoading: false })
       }
     },
@@ -65,17 +93,10 @@ export const usePetStore = create<PetStore>((set, get) => {
 
     addPet: async (petData) => {
       set({ isLoading: true, error: null })
-      await delay(300)
 
       try {
-        const newPet: Pet = {
-          id: generateId('pet-'),
-          ...petData,
-          // derived fields
-          ageDisplay: formatAgeDisplayFromMonths(Number(petData.age)),
-          createdBy: 'system',
-          postedDate: new Date().toISOString()
-        }
+        const response = await api.post('/pets', petData)
+        const newPet = normalizePetResponse(response.data)
 
         set(state => ({
           pets: [...state.pets, newPet],
@@ -84,7 +105,7 @@ export const usePetStore = create<PetStore>((set, get) => {
 
         return newPet
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to add pet'
+        const message = extractApiErrorMessage(error, 'Failed to add pet')
         set({ error: message, isLoading: false })
         throw error
       }
@@ -92,25 +113,17 @@ export const usePetStore = create<PetStore>((set, get) => {
 
     updatePet: async (petId: string, updates: Partial<Pet>) => {
       set({ isLoading: true, error: null })
-      await delay(300)
 
       try {
+        const response = await api.put(`/pets/${petId}`, updates)
+        const updatedPet = normalizePetResponse(response.data)
+
         set(state => ({
-          pets: state.pets.map(pet =>
-            pet.id === petId
-              ? {
-                  ...pet,
-                  ...updates,
-                  ageDisplay: typeof updates.age === 'number'
-                    ? formatAgeDisplayFromMonths(updates.age)
-                    : pet.ageDisplay
-                }
-              : pet
-          ),
+          pets: state.pets.map(pet => pet.id === petId ? updatedPet : pet),
           isLoading: false
         }))
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to update pet'
+        const message = extractApiErrorMessage(error, 'Failed to update pet')
         set({ error: message, isLoading: false })
         throw error
       }
@@ -118,15 +131,16 @@ export const usePetStore = create<PetStore>((set, get) => {
 
     deletePet: async (petId: string) => {
       set({ isLoading: true, error: null })
-      await delay(300)
 
       try {
+        await api.delete(`/pets/${petId}`)
+        
         set(state => ({
           pets: state.pets.filter(pet => pet.id !== petId),
           isLoading: false
         }))
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to delete pet'
+        const message = extractApiErrorMessage(error, 'Failed to delete pet')
         set({ error: message, isLoading: false })
         throw error
       }

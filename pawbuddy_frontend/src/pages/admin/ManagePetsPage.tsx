@@ -155,7 +155,9 @@ const ManagePetsPage: React.FC = () => {
     if (!form.color.trim()) return 'Color is required'
     if (!form.weight.trim()) return 'Weight is required'
     if (!form.location.trim()) return 'Location is required'
-    if (!form.description.trim()) return 'Description is required'
+    const description = form.description.trim()
+    if (!description) return 'Description is required'
+    if (description.length < 10) return 'Description must be at least 10 characters'
     if (form.age <= 0) return 'Age must be greater than 0'
     if (form.images.length === 0) return 'Please add at least one image'
     return null
@@ -196,7 +198,17 @@ const ManagePetsPage: React.FC = () => {
       handleCloseModal()
       resetForm()
     } catch (err) {
-      showToast.error(editingPetId ? 'Failed to update' : 'Failed to add')
+      const apiMessage =
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        (err as { response?: { data?: { message?: string; error?: string } } }).response?.data
+          ? (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.message ||
+            (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.error
+          : null
+
+      const fallbackMessage = editingPetId ? 'Failed to update' : 'Failed to add'
+      showToast.error(apiMessage || fallbackMessage)
     } finally {
       setIsSubmitting(false)
     }

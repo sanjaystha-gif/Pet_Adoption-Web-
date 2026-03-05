@@ -66,6 +66,7 @@ const RegisterPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input label="Full name" value={name} onChange={(e) => setName(e.target.value)} required />
               <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Input label="Phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
               <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               <Input label="Confirm Password" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
 

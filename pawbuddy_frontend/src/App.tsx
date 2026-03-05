@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { ProtectedRoute } from './components/common/ProtectedRoute'
+import { usePets } from './context/petStore'
 
 // Pages
 import HomePage from './pages/public/HomePage'
@@ -27,6 +28,13 @@ import ManageUsersPage from './pages/admin/ManageUsersPage'
 import ManageBookingsPage from './pages/admin/ManageBookingsPage'
 
 const App: React.FC = () => {
+  const { getPets } = usePets()
+
+  // Fetch pets on app load
+  useEffect(() => {
+    getPets()
+  }, [getPets])
+
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
@@ -47,9 +55,13 @@ const App: React.FC = () => {
             {/* User Protected Routes */}
             <Route element={<ProtectedRoute role="adopter" />}>
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/my-bookings" element={<MyBookingsPage />} />
               <Route path="/favourites" element={<FavouritesPage />} />
+            </Route>
+
+            {/* Shared Protected Routes */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
 
             {/* Admin Protected Routes */}
