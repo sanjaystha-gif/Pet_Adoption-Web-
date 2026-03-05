@@ -33,10 +33,10 @@ export const PetCard: React.FC<PetCardProps> = ({
       aria-label={`${pet.name} card`}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="bg-white rounded-xl border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden h-full flex flex-col"
+      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden h-full flex flex-col"
     >
       {/* Image */}
-      <div className="w-full bg-gradient-to-br from-orange-50 to-purple-50">
+      <div className="w-full bg-gradient-to-br from-orange-50 to-purple-50 dark:from-gray-700 dark:to-gray-600">
         <div className="aspect-[4/3] w-full overflow-hidden">
           <img
             src={pet.images?.[0] || 'https://picsum.photos/seed/pet/800/600'}
@@ -51,8 +51,8 @@ export const PetCard: React.FC<PetCardProps> = ({
         <div>
           <div className="flex items-start justify-between mb-3 gap-3">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">{pet.name}</h3>
-              <p className="text-sm text-gray-500 mt-1">{pet.breed} • {pet.ageDisplay}</p>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{pet.name}</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{pet.breed} • {pet.ageDisplay}</p>
             </div>
 
             <div className="flex-shrink-0">
@@ -74,9 +74,9 @@ export const PetCard: React.FC<PetCardProps> = ({
             {pet.neutered && <Badge variant="info" size="sm">Neutered</Badge>}
           </div>
 
-          <p className="text-sm text-gray-600 mb-4 flex items-center gap-2"><FiMapPin size={14} />{pet.location}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 flex items-center gap-2"><FiMapPin size={14} />{pet.location}</p>
 
-          <p className="text-sm text-gray-700 line-clamp-3 mb-4">{pet.description}</p>
+          <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 mb-4">{pet.description}</p>
         </div>
 
         <div className="flex items-center justify-between gap-3">
@@ -88,7 +88,7 @@ export const PetCard: React.FC<PetCardProps> = ({
 
           <button
             onClick={handleFavouriteClick}
-            className="p-2.5 rounded-lg bg-gradient-to-br from-pink-50 to-red-50 hover:from-pink-100 hover:to-red-100 transition-all duration-200 hover:scale-110"
+            className="p-2.5 rounded-lg bg-gradient-to-br from-pink-50 to-red-50 dark:from-gray-700 dark:to-gray-600 hover:from-pink-100 hover:to-red-100 dark:hover:from-pink-900 dark:hover:to-red-900 transition-all duration-200 hover:scale-110"
             aria-label={isFavourited ? 'Remove from favourites' : 'Add to favourites'}
             aria-pressed={isFavourited}
           >

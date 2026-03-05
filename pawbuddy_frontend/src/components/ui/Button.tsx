@@ -16,12 +16,12 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles = 'font-semibold transition-all duration-200 flex items-center justify-center gap-2'
 
   const variants: Record<string, string> = {
-    primary: 'bg-primary text-white hover:bg-primary-dark shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50',
-    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-white hover:-translate-y-0.5 hover:shadow-md',
-    ghost: 'text-primary hover:bg-orange-50',
-    danger: 'bg-error text-white hover:bg-red-600 shadow-md hover:shadow-lg',
-    success: 'bg-success text-white hover:bg-green-600 shadow-md hover:shadow-lg',
-    secondary: 'bg-accent text-white hover:bg-purple-700 shadow-md hover:shadow-lg'
+    primary: 'bg-primary text-white hover:bg-primary-dark shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 dark:shadow-primary/20',
+    outline: 'border-2 border-primary text-primary dark:text-primary-light hover:bg-primary hover:text-white hover:-translate-y-0.5 hover:shadow-md',
+    ghost: 'text-primary dark:text-primary-light hover:bg-orange-50 dark:hover:bg-gray-700',
+    danger: 'bg-error text-white hover:bg-red-600 shadow-md hover:shadow-lg dark:shadow-red-900/30',
+    success: 'bg-success text-white hover:bg-green-600 shadow-md hover:shadow-lg dark:shadow-green-900/30',
+    secondary: 'bg-accent text-white hover:bg-purple-700 shadow-md hover:shadow-lg dark:shadow-purple-900/30'
   }
 
   const sizes: Record<string, string> = {

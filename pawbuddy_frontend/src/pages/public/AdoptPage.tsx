@@ -118,9 +118,9 @@ const AdoptPage: React.FC = () => {
   const hasActiveFilters = Object.values(filters).some(v => v) || gender || color || ageRange
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-orange-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-b from-white via-orange-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-orange-500 via-purple-500 to-pink-500 text-white py-20 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-orange-500 via-purple-500 to-pink-500 dark:from-orange-600 dark:via-purple-600 dark:to-pink-600 text-white py-20 relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
@@ -163,12 +163,12 @@ const AdoptPage: React.FC = () => {
           {/* Sidebar Filters */}
           <aside className="lg:col-span-1">
             <div className="sticky top-24">
-              <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-orange-200">
+              <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-orange-200 dark:bg-gray-800 dark:border-gray-700">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">🎨</span>
-                    <h3 className="font-black text-xl text-gray-900">Smart Filters</h3>
+                    <h3 className="font-black text-xl text-gray-900 dark:text-white">Smart Filters</h3>
                   </div>
                   {hasActiveFilters && (
                     <button
@@ -191,14 +191,14 @@ const AdoptPage: React.FC = () => {
 
                 {/* Pet Type Filter */}
                 <div className="mb-8">
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wide">What are you looking for?</label>
+                  <label className="block text-sm font-black text-gray-900 dark:text-white mb-3 uppercase tracking-wide">What are you looking for?</label>
                   <div className="flex gap-3">
                     <button
                       onClick={() => setFilters(f => ({ ...f, type: f?.type === 'dog' ? undefined : 'dog' }))}
                       className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all duration-200 ${
                         filters.type === 'dog'
                           ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-lg scale-105'
-                          : 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-2 border-gray-200 hover:border-orange-400 hover:shadow-md'
+                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 border-2 border-gray-200 dark:border-gray-600 hover:border-orange-400 hover:shadow-md'
                       }`}
                     >
                       🐕 Dogs
@@ -208,7 +208,7 @@ const AdoptPage: React.FC = () => {
                       className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all duration-200 ${
                         filters.type === 'cat'
                           ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white shadow-lg scale-105'
-                          : 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-2 border-gray-200 hover:border-purple-400 hover:shadow-md'
+                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-400 hover:shadow-md'
                       }`}
                     >
                       🐱 Cats
@@ -218,7 +218,7 @@ const AdoptPage: React.FC = () => {
 
                 {/* Breed Filter */}
                 <div className="mb-8">
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wide">Breed</label>
+                  <label className="block text-sm font-black text-gray-900 dark:text-white mb-3 uppercase tracking-wide">Breed</label>
                   <Select
                     value={filters.breed ?? ''}
                     onChange={(e) => setFilters(f => ({ ...f, breed: e.target.value || undefined }))}
@@ -228,14 +228,14 @@ const AdoptPage: React.FC = () => {
 
                 {/* Gender Filter */}
                 <div className="mb-8">
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wide">Gender</label>
+                  <label className="block text-sm font-black text-gray-900 dark:text-white mb-3 uppercase tracking-wide">Gender</label>
                   <div className="flex gap-3">
                     <button
                       onClick={() => setGender(gender === 'male' ? '' : 'male')}
                       className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all duration-200 ${
                         gender === 'male'
                           ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-lg scale-105'
-                          : 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-2 border-gray-200 hover:border-blue-400 hover:shadow-md'
+                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-400 hover:shadow-md'
                       }`}
                     >
                       ♂️ Male
@@ -245,7 +245,7 @@ const AdoptPage: React.FC = () => {
                       className={`flex-1 px-4 py-3 rounded-xl font-bold transition-all duration-200 ${
                         gender === 'female'
                           ? 'bg-gradient-to-r from-pink-400 to-pink-500 text-white shadow-lg scale-105'
-                          : 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-2 border-gray-200 hover:border-pink-400 hover:shadow-md'
+                          : 'bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 border-2 border-gray-200 dark:border-gray-600 hover:border-pink-400 hover:shadow-md'
                       }`}
                     >
                       ♀️ Female
@@ -255,7 +255,7 @@ const AdoptPage: React.FC = () => {
 
                 {/* Age Range Filter */}
                 <div className="mb-8">
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wide">Age Range</label>
+                  <label className="block text-sm font-black text-gray-900 dark:text-white mb-3 uppercase tracking-wide">Age Range</label>
                   <Select
                     value={ageRange}
                     onChange={(e) => setAgeRange(e.target.value)}
@@ -271,7 +271,7 @@ const AdoptPage: React.FC = () => {
 
                 {/* Color Filter */}
                 <div className="mb-8">
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wide">Color</label>
+                  <label className="block text-sm font-black text-gray-900 dark:text-white mb-3 uppercase tracking-wide">Color</label>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {colors.map(c => (
                       <button
@@ -279,16 +279,16 @@ const AdoptPage: React.FC = () => {
                         onClick={() => setColor(color === c ? '' : c)}
                         className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all duration-200 ${
                           color === c
-                            ? 'border-orange-500 bg-gradient-to-r from-orange-50 to-orange-100 ring-2 ring-orange-300 shadow-md'
-                            : 'border-gray-200 hover:border-orange-300 bg-white hover:bg-gradient-to-r hover:from-gray-50 hover:to-white'
+                            ? 'border-orange-500 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800 ring-2 ring-orange-300 shadow-md'
+                            : 'border-gray-200 dark:border-gray-600 hover:border-orange-300 bg-white dark:bg-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-white dark:hover:from-gray-600 dark:hover:to-gray-700'
                         }`}
                       >
                         <div
-                          className="w-7 h-7 rounded-lg border-2 border-gray-400 flex-shrink-0 shadow-sm"
+                          className="w-7 h-7 rounded-lg border-2 border-gray-400 dark:border-gray-500 flex-shrink-0 shadow-sm"
                           style={{ backgroundColor: colorMap[c] || '#E5E7EB' }}
                         />
-                        <span className="text-sm font-semibold text-gray-800 flex-1 text-left">{c}</span>
-                        {color === c && <span className="text-orange-600 font-bold text-lg">✓</span>}
+                        <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 flex-1 text-left">{c}</span>
+                        {color === c && <span className="text-orange-600 dark:text-orange-400 font-bold text-lg">✓</span>}
                       </button>
                     ))}
                   </div>
@@ -296,7 +296,7 @@ const AdoptPage: React.FC = () => {
 
                 {/* Location Filter */}
                 <div className="mb-8">
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wide">Location</label>
+                  <label className="block text-sm font-black text-gray-900 dark:text-white mb-3 uppercase tracking-wide">Location</label>
                   <Input 
                     value={filters.location ?? ''} 
                     onChange={(e) => setFilters(f => ({ ...f, location: e.target.value || undefined }))} 
@@ -306,36 +306,36 @@ const AdoptPage: React.FC = () => {
 
                 {/* Active Filters Display */}
                 {hasActiveFilters && (
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-500 rounded-r-xl p-4 mb-6">
-                    <p className="text-xs font-black text-blue-900 mb-3 uppercase">ACTIVE FILTERS:</p>
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-l-4 border-blue-500 dark:border-blue-400 rounded-r-xl p-4 mb-6">
+                    <p className="text-xs font-black text-blue-900 dark:text-blue-200 mb-3 uppercase">ACTIVE FILTERS:</p>
                     <div className="flex flex-wrap gap-2">
                       {filters.type && (
-                        <span className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-100 text-xs font-bold rounded-full">
                           {filters.type === 'dog' ? '🐕 Dogs' : '🐱 Cats'} ✕
                         </span>
                       )}
                       {filters.breed && (
-                        <span className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-100 text-xs font-bold rounded-full">
                           {filters.breed} ✕
                         </span>
                       )}
                       {filters.location && (
-                        <span className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-100 text-xs font-bold rounded-full">
                           📍 {filters.location} ✕
                         </span>
                       )}
                       {gender && (
-                        <span className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-100 text-xs font-bold rounded-full">
                           {gender === 'male' ? '♂️ Male' : '♀️ Female'} ✕
                         </span>
                       )}
                       {color && (
-                        <span className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-100 text-xs font-bold rounded-full">
                           🎨 {color} ✕
                         </span>
                       )}
                       {ageRange && (
-                        <span className="px-3 py-1 bg-blue-200 text-blue-800 text-xs font-bold rounded-full">
+                        <span className="px-3 py-1 bg-blue-200 dark:bg-blue-700 text-blue-800 dark:text-blue-100 text-xs font-bold rounded-full">
                           📅 {ages.find(a => a.key === ageRange)?.label} ✕
                         </span>
                       )}
@@ -364,7 +364,7 @@ const AdoptPage: React.FC = () => {
           {/* Main Content */}
           <main className="lg:col-span-3">
             {/* Toolbar */}
-            <div className="mb-8 bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div className="mb-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700">
               <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
                 <div className="flex-1">
                   <Input 
@@ -387,13 +387,13 @@ const AdoptPage: React.FC = () => {
                   className="border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all font-semibold"
                 />
 
-                <div className="flex gap-2 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl p-1.5 border-2 border-gray-200 shadow-sm">
+                <div className="flex gap-2 bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 rounded-xl p-1.5 border-2 border-gray-200 dark:border-gray-600 shadow-sm">
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`px-4 py-2 rounded-lg font-bold transition-all ${
                       viewMode === 'grid'
                         ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-md scale-105'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-white'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-gray-700'
                     }`}
                   >
                     ⊞ Grid
@@ -403,7 +403,7 @@ const AdoptPage: React.FC = () => {
                     className={`px-4 py-2 rounded-lg font-bold transition-all ${
                       viewMode === 'list'
                         ? 'bg-gradient-to-r from-purple-400 to-purple-500 text-white shadow-md scale-105'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-white'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-gray-700'
                     }`}
                   >
                     ☰ List
@@ -412,15 +412,15 @@ const AdoptPage: React.FC = () => {
               </div>
 
               {/* Results Counter */}
-              <div className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between">
-                <p className="text-lg font-black text-gray-900">
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <p className="text-lg font-black text-gray-900 dark:text-white">
                   Found <span className="bg-gradient-to-r from-orange-500 to-purple-500 bg-clip-text text-transparent">{filtered.length}</span> pet{filtered.length !== 1 ? 's' : ''}
-                  {query && <span className="text-gray-600 ml-2">for "{query}"</span>}
+                  {query && <span className="text-gray-600 dark:text-gray-400 ml-2">for "{query}"</span>}
                 </p>
                 {query && (
                   <button
                     onClick={() => setQuery('')}
-                    className="text-sm text-gray-500 hover:text-gray-900 font-semibold underline"
+                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-semibold underline"
                   >
                     Clear Search
                   </button>
@@ -442,12 +442,12 @@ const AdoptPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-24 bg-gradient-to-br from-orange-50 via-purple-50 to-pink-50 rounded-3xl border-2 border-dashed border-orange-200">
+              <div className="text-center py-24 bg-gradient-to-br from-orange-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 rounded-3xl border-2 border-dashed border-orange-200 dark:border-orange-700">
                 <div className="mb-4 animate-bounce">
                   <p className="text-6xl">🔍</p>
                 </div>
-                <h3 className="text-3xl font-black text-gray-900 mb-2">No Pets Match Your Search</h3>
-                <p className="text-gray-600 mb-8 text-lg">We couldn't find any pets with those filters.</p>
+                <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-2">No Pets Match Your Search</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">We couldn't find any pets with those filters.</p>
                 <div className="space-y-4">
                   <p className="text-sm text-gray-500 font-semibold">Try:</p>
                   <ul className="text-sm text-gray-600 space-y-2">
