@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { usePets } from '../../context/petStore'
 import { useAuth } from '../../context/authStore'
@@ -53,6 +53,54 @@ const PetDetailPage: React.FC = () => {
   })
 
   const [newPet, setNewPet] = useState({ type: '', breed: '', name: '' })
+
+  // Memoized handlers to prevent input re-renders and focus loss during typing
+  const handlePhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, phone: e.target.value }))
+    setErrors(prev => ({ ...prev, phone: '' }))
+  }, [])
+
+  const handleMessageChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, message: e.target.value }))
+    setErrors(prev => ({ ...prev, message: '' }))
+  }, [])
+
+  const handleHomeTypeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, homeType: e.target.value }))
+    setErrors(prev => ({ ...prev, homeType: '' }))
+  }, [])
+
+  const handleYardStatusChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, yardStatus: e.target.value }))
+    setErrors(prev => ({ ...prev, yardStatus: '' }))
+  }, [])
+
+  const handleWorkScheduleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, workSchedule: e.target.value }))
+    setErrors(prev => ({ ...prev, workSchedule: '' }))
+  }, [])
+
+  const handlePetExperienceChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, petExperience: e.target.value }))
+    setErrors(prev => ({ ...prev, petExperience: '' }))
+  }, [])
+
+  const handleLifetimeCommitmentChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, lifetimeCommitment: e.target.checked }))
+    setErrors(prev => ({ ...prev, lifetimeCommitment: '' }))
+  }, [])
+
+  const handleNewPetTypeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPet(prev => ({ ...prev, type: e.target.value }))
+  }, [])
+
+  const handleNewPetBreedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPet(prev => ({ ...prev, breed: e.target.value }))
+  }, [])
+
+  const handleNewPetNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPet(prev => ({ ...prev, name: e.target.value }))
+  }, [])
 
   if (!pet) return <div className="container py-20">Pet not found</div>
 
@@ -279,10 +327,7 @@ const PetDetailPage: React.FC = () => {
                           : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-4 focus:ring-orange-200 focus:border-orange-500 hover:border-gray-400'
                       }`}
                       value={formData.phone} 
-                      onChange={(e) => {
-                        setFormData({ ...formData, phone: e.target.value })
-                        if (errors.phone) setErrors({ ...errors, phone: '' })
-                      }}
+                      onChange={handlePhoneChange}
                     />
                     {!errors.phone && formData.phone && <span className="absolute right-4 top-3.5 text-green-500 font-bold">✓</span>}
                   </div>
@@ -306,10 +351,7 @@ const PetDetailPage: React.FC = () => {
                     }`}
                     rows={4}
                     value={formData.message} 
-                    onChange={(e) => {
-                      setFormData({ ...formData, message: e.target.value })
-                      if (errors.message) setErrors({ ...errors, message: '' })
-                    }}
+                    onChange={handleMessageChange}
                   />
                   {errors.message && <p className="text-red-600 text-xs font-bold mt-2 flex items-center gap-1">⚠️ {errors.message}</p>}
                   {formData.message.length >= 20 && !errors.message && (
@@ -331,10 +373,7 @@ const PetDetailPage: React.FC = () => {
                         : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
                     }`}
                     value={formData.homeType}
-                    onChange={(e) => {
-                      setFormData({ ...formData, homeType: e.target.value })
-                      if (errors.homeType) setErrors({ ...errors, homeType: '' })
-                    }}
+                    onChange={handleHomeTypeChange}
                   >
                     <option value="">Select home type...</option>
                     <option value="house">House</option>
@@ -354,10 +393,7 @@ const PetDetailPage: React.FC = () => {
                         : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
                     }`}
                     value={formData.yardStatus}
-                    onChange={(e) => {
-                      setFormData({ ...formData, yardStatus: e.target.value })
-                      if (errors.yardStatus) setErrors({ ...errors, yardStatus: '' })
-                    }}
+                    onChange={handleYardStatusChange}
                   >
                     <option value="">Select yard status...</option>
                     <option value="no-yard">No Yard</option>
@@ -378,10 +414,7 @@ const PetDetailPage: React.FC = () => {
                         : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
                     }`}
                     value={formData.workSchedule}
-                    onChange={(e) => {
-                      setFormData({ ...formData, workSchedule: e.target.value })
-                      if (errors.workSchedule) setErrors({ ...errors, workSchedule: '' })
-                    }}
+                    onChange={handleWorkScheduleChange}
                   >
                     <option value="">Select work schedule...</option>
                     <option value="work-from-home">Work from Home</option>
@@ -406,10 +439,7 @@ const PetDetailPage: React.FC = () => {
                         : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
                     }`}
                     value={formData.petExperience}
-                    onChange={(e) => {
-                      setFormData({ ...formData, petExperience: e.target.value })
-                      if (errors.petExperience) setErrors({ ...errors, petExperience: '' })
-                    }}
+                    onChange={handlePetExperienceChange}
                   >
                     <option value="">Select experience level...</option>
                     <option value="first-time">First time pet owner</option>
@@ -445,21 +475,21 @@ const PetDetailPage: React.FC = () => {
                           placeholder="Pet type (dog/cat)"
                           className="px-3 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-orange-200"
                           value={newPet.type}
-                          onChange={(e) => setNewPet({ ...newPet, type: e.target.value })}
+                          onChange={handleNewPetTypeChange}
                         />
                         <input
                           type="text"
                           placeholder="Breed"
                           className="px-3 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-orange-200"
                           value={newPet.breed}
-                          onChange={(e) => setNewPet({ ...newPet, breed: e.target.value })}
+                          onChange={handleNewPetBreedChange}
                         />
                         <input
                           type="text"
                           placeholder="Name"
                           className="px-3 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-orange-200"
                           value={newPet.name}
-                          onChange={(e) => setNewPet({ ...newPet, name: e.target.value })}
+                          onChange={handleNewPetNameChange}
                         />
                       </div>
                       <button
@@ -478,10 +508,7 @@ const PetDetailPage: React.FC = () => {
                       type="checkbox"
                       className="w-5 h-5 rounded accent-orange-500"
                       checked={formData.lifetimeCommitment}
-                      onChange={(e) => {
-                        setFormData({ ...formData, lifetimeCommitment: e.target.checked })
-                        if (errors.lifetimeCommitment) setErrors({ ...errors, lifetimeCommitment: '' })
-                      }}
+                      onChange={handleLifetimeCommitmentChange}
                     />
                     <span className="text-sm font-bold text-gray-800">
                       💕 I commit to care for this pet for its entire lifetime

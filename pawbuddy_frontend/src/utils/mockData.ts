@@ -37,54 +37,35 @@ export const MOCK_USERS: User[] = [
     bio: 'Looking for a furry friend',
     city: 'Los Angeles',
     joinedDate: '2024-03-20'
+  },
+  {
+    id: 'user-3',
+    name: 'Test User',
+    email: 'jhole12@gmail.com',
+    password: 'password123',
+    role: 'adopter',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=jhole12',
+    phone: '555-0004',
+    bio: 'Pet adoption enthusiast',
+    city: 'New York',
+    joinedDate: '2024-11-01'
+  },
+  {
+    id: 'user-4',
+    name: 'Puskas User',
+    email: 'puskas1@gmail.com',
+    password: 'password123',
+    role: 'adopter',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=puskas1',
+    phone: '555-0005',
+    bio: 'Pet lover',
+    city: 'Tech City',
+    joinedDate: '2024-11-15'
   }
 ]
 
 // Mock pets - Empty array, will be populated when admin adds pets
 export const MOCK_PETS: Pet[] = []
 
-// Mock bookings
-export const MOCK_BOOKINGS: Booking[] = [
-  {
-    id: 'booking-1',
-    petId: 'dog-1',
-    petName: 'Max',
-    petImage: 'https://picsum.photos/seed/dog1/400/300',
-    adopterId: 'user-1',
-    adopterName: 'Samantha Smith',
-    adopterEmail: 'sam@email.com',
-    adopterPhone: '555-0002',
-    message: 'I love outdoor activities and Max seems perfect for me!',
-    status: 'approved',
-    submittedAt: '2024-11-01',
-    updatedAt: '2024-11-02'
-  },
-  {
-    id: 'booking-2',
-    petId: 'cat-2',
-    petName: 'Luna',
-    petImage: 'https://picsum.photos/seed/cat2/400/300',
-    adopterId: 'user-2',
-    adopterName: 'John Doe',
-    adopterEmail: 'john@email.com',
-    adopterPhone: '555-0003',
-    message: 'Luna seems like the perfect companion for my apartment.',
-    status: 'pending',
-    submittedAt: '2024-11-14',
-    updatedAt: '2024-11-14'
-  },
-  {
-    id: 'booking-3',
-    petId: 'dog-3',
-    petName: 'Charlie',
-    petImage: 'https://picsum.photos/seed/dog3/400/300',
-    adopterId: 'user-1',
-    adopterName: 'Samantha Smith',
-    adopterEmail: 'sam@email.com',
-    adopterPhone: '555-0002',
-    message: 'Charlie\'s energy matches mine perfectly!',
-    status: 'rejected',
-    submittedAt: '2024-10-28',
-    updatedAt: '2024-10-30'
-  }
-]
+// Mock bookings - Empty array, bookings are now persisted in localStorage
+export const MOCK_BOOKINGS: Booking[] = []

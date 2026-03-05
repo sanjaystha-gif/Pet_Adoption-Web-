@@ -23,6 +23,35 @@ const withDefaultAvatar = (user: User): User => {
   }
 }
 
+// Load registered users from localStorage that were created during registration
+const loadRegisteredUsers = (): User[] => {
+  try {
+    const stored = localStorage.getItem('pawbuddy_registered_users')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
+// Save registered users to localStorage to persist them across sessions
+const saveRegisteredUsers = (users: User[]) => {
+  localStorage.setItem('pawbuddy_registered_users', JSON.stringify(users))
+}
+
+// Initialize MOCK_USERS with both hardcoded and registered users
+const initializeMockUsers = () => {
+  const registered = loadRegisteredUsers()
+  // Only add registered users that aren't already in MOCK_USERS
+  registered.forEach(regUser => {
+    if (!MOCK_USERS.find(u => u.email === regUser.email)) {
+      MOCK_USERS.push(regUser as User & { password?: string })
+    }
+  })
+}
+
+// Initialize mock users on startup
+initializeMockUsers()
+
 const persistAuthState = (user: User, token?: string, refreshToken?: string) => {
   const normalizedUser = withDefaultAvatar(user)
   const authData = { user: normalizedUser, isAuthenticated: true }
@@ -86,11 +115,13 @@ export const useAuthStore = create<AuthStore>((set, get) => {
           const user = MOCK_USERS.find(u => u.email === email)
 
           if (!user) {
-            const message = extractApiErrorMessage(apiError, 'User not found')
-            throw new Error(message)
+            // User not found in mock DB - return this error, not the API error
+            throw new Error('User not found')
           }
 
-          if (user.password !== password) {
+          // Ensure the user has a password property before comparing
+          const storedPassword = (user as User & { password?: string }).password
+          if (!storedPassword || storedPassword !== password) {
             throw new Error('Invalid password')
           }
 
@@ -127,7 +158,13 @@ export const useAuthStore = create<AuthStore>((set, get) => {
           joinedDate: new Date().toISOString()
         }
 
-        MOCK_USERS.push({ ...newUser, password: formData.password })
+        const userWithPassword = { ...newUser, password: formData.password }
+        MOCK_USERS.push(userWithPassword as User & { password?: string })
+
+        // Persist registered users to localStorage so they survive page refreshes
+        const registered = loadRegisteredUsers()
+        registered.push(userWithPassword as User & { password?: string })
+        saveRegisteredUsers(registered)
 
         const { password: _, ...userWithoutPassword } = newUser
         const normalizedUser = withDefaultAvatar(userWithoutPassword)
@@ -144,6 +181,8 @@ export const useAuthStore = create<AuthStore>((set, get) => {
       localStorage.removeItem('pawbuddy_auth')
       localStorage.removeItem('authToken')
       localStorage.removeItem('refreshToken')
+      // Note: We intentionally keep 'pawbuddy_registered_users' in localStorage
+      // so registered users can log back in without re-registering
       set({ user: null, isAuthenticated: false })
     },
 

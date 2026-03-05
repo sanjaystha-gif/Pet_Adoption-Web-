@@ -180,10 +180,10 @@ const ManagePetsPage: React.FC = () => {
     setOpen(true)
   }
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setOpen(false)
     setEditingPetId(null)
-  }
+  }, [])
 
   const addImageFromUrl = () => {
     const trimmed = imageUrlInput.trim()

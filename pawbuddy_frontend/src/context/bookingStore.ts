@@ -1,7 +1,21 @@
 import { create } from 'zustand'
 import type { Booking, BookingFormData } from '../types'
-import { MOCK_BOOKINGS } from '../utils/mockData'
 import { delay, generateId } from '../utils/helpers'
+
+// Load bookings from localStorage (excluding mock data)
+const loadPersistedBookings = (): Booking[] => {
+  try {
+    const stored = localStorage.getItem('pawbuddy_bookings')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
+// Save bookings to localStorage
+const saveBookings = (bookings: Booking[]) => {
+  localStorage.setItem('pawbuddy_bookings', JSON.stringify(bookings))
+}
 
 interface BookingStore {
   bookings: Booking[]
@@ -28,7 +42,7 @@ interface BookingStore {
 
 export const useBookingStore = create<BookingStore>((set, get) => {
   return {
-    bookings: [...MOCK_BOOKINGS],
+    bookings: loadPersistedBookings(),
     favourites: localStorage.getItem('pawbuddy_favourites')
       ? JSON.parse(localStorage.getItem('pawbuddy_favourites')!)
       : [],
@@ -74,10 +88,14 @@ export const useBookingStore = create<BookingStore>((set, get) => {
           updatedAt: new Date().toISOString()
         }
 
-        set(state => ({
-          bookings: [...state.bookings, newBooking],
-          isLoading: false
-        }))
+        set(state => {
+          const updatedBookings = [...state.bookings, newBooking]
+          saveBookings(updatedBookings)
+          return {
+            bookings: updatedBookings,
+            isLoading: false
+          }
+        })
 
         return newBooking
       } catch (error) {
@@ -92,14 +110,18 @@ export const useBookingStore = create<BookingStore>((set, get) => {
       await delay(300)
 
       try {
-        set(state => ({
-          bookings: state.bookings.map(b =>
+        set(state => {
+          const updatedBookings = state.bookings.map(b =>
             b.id === bookingId
               ? { ...b, status, updatedAt: new Date().toISOString() }
               : b
-          ),
-          isLoading: false
-        }))
+          )
+          saveBookings(updatedBookings)
+          return {
+            bookings: updatedBookings,
+            isLoading: false
+          }
+        })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to update booking'
         set({ error: message, isLoading: false })
@@ -120,10 +142,14 @@ export const useBookingStore = create<BookingStore>((set, get) => {
       await delay(300)
 
       try {
-        set(state => ({
-          bookings: state.bookings.filter(b => b.id !== bookingId),
-          isLoading: false
-        }))
+        set(state => {
+          const updatedBookings = state.bookings.filter(b => b.id !== bookingId)
+          saveBookings(updatedBookings)
+          return {
+            bookings: updatedBookings,
+            isLoading: false
+          }
+        })
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to cancel booking'
         set({ error: message, isLoading: false })
