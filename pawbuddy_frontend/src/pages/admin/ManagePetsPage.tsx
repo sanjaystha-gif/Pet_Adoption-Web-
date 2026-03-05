@@ -357,7 +357,7 @@ const ManagePetsPage: React.FC = () => {
       <Modal isOpen={isOpen} onClose={handleCloseModal} title={editingPetId ? 'Edit Pet' : 'Add Pet'}>
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Name" value={form.name} onChange={handleNameChange} required onBlur={() => {}} />
+            <Input label="Name" value={form.name} onChange={handleNameChange} autoFocus required />
             <Select
               label="Breed"
               value={form.breed}
@@ -416,10 +416,9 @@ const ManagePetsPage: React.FC = () => {
               value={form.age}
               onChange={handleAgeChange}
               required
-              onBlur={() => {}}
             />
 
-            <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={handleWeightChange} required onBlur={() => {}} />
+            <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={handleWeightChange} required />
             <Select
               label="Color"
               value={form.color}
@@ -427,7 +426,6 @@ const ManagePetsPage: React.FC = () => {
               options={colorOptions}
               placeholder="Select color"
               required
-              onBlur={() => {}}
             />
             <Select
               label="Location"
@@ -436,7 +434,6 @@ const ManagePetsPage: React.FC = () => {
               options={locationOptions}
               placeholder="Select location"
               required
-              onBlur={() => {}}
             />
           </div>
 
@@ -446,7 +443,6 @@ const ManagePetsPage: React.FC = () => {
             value={form.description}
             onChange={handleDescriptionChange}
             required
-            onBlur={() => {}}
           />
 
           <Input
@@ -454,7 +450,6 @@ const ManagePetsPage: React.FC = () => {
             placeholder="Friendly, Playful, Loyal"
             value={personalityInput}
             onChange={handlePersonalityChange}
-            onBlur={() => {}}
           />
 
           <div className="space-y-3">
@@ -464,7 +459,6 @@ const ManagePetsPage: React.FC = () => {
                 placeholder="Paste image URL"
                 value={imageUrlInput}
                 onChange={handleImageUrlChange}
-                onBlur={() => {}}
               />
               <Button variant="outline" onClick={addImageFromUrl}>Add URL</Button>
               <Button variant="secondary" onClick={handleUploadImages}>Upload</Button>
