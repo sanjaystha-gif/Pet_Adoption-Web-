@@ -37,11 +37,15 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white to-[#fff8f6] py-12">
       <div className="w-full max-w-3xl bg-white/60 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
         <aside className="hidden md:flex flex-col items-start justify-center gap-4 p-10 bg-gradient-to-br from-[#FFEDE9] to-[#FFF8F6]">
-          <div className="logo-gradient text-3xl font-extrabold">PawBuddy</div>
+          <img
+            src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772738742/Logo_wxtsej.png"
+            alt="PawBuddy"
+            className="h-12 w-auto"
+          />
           <h3 className="text-2xl font-semibold text-gray-900">Find your furever friend</h3>
           <p className="text-gray-600">Join thousands of adopters who found their companions.</p>
           <div className="mt-6 w-full">
-            <img src="https://picsum.photos/seed/login-dog/420/320" alt="Puppy" className="rounded-xl shadow-lg w-full object-cover" />
+            <img src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772738445/Cat_with_Log_In_hanya8.png" alt="Puppy" className="rounded-xl shadow-lg w-full object-cover" />
           </div>
         </aside>
 

@@ -50,11 +50,15 @@ const RegisterPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center py-12">
       <div className="w-full max-w-3xl bg-white/60 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
         <aside className="hidden md:flex flex-col items-start justify-center gap-4 p-10 bg-gradient-to-br from-[#FFF7EE] to-[#FFFDFB]">
-          <div className="logo-gradient text-3xl font-extrabold">PawBuddy</div>
+          <img
+            src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772738742/Logo_wxtsej.png"
+            alt="PawBuddy"
+            className="h-12 w-auto"
+          />
           <h3 className="text-2xl font-semibold text-gray-900">Join our community</h3>
           <p className="text-gray-600">Create an account to save favourites and book visits.</p>
           <div className="mt-6 w-full">
-            <img src="https://picsum.photos/seed/register-dog/420/320" alt="Puppy" className="rounded-xl shadow-lg w-full object-cover" />
+            <img src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772358071/DogPic_vo8toz.png" alt="Puppy" className="rounded-xl shadow-lg w-full object-cover" />
           </div>
         </aside>
 

@@ -53,10 +53,13 @@ export const Navbar: React.FC = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 text-2xl font-bold"
+          className="flex items-center"
         >
-          <span className="text-primary">🐾 Paw</span>
-          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Buddy</span>
+          <img
+            src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772738742/Logo_wxtsej.png"
+            alt="PawBuddy"
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}

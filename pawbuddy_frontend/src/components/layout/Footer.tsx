@@ -9,10 +9,11 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">
-              <span className="text-primary">🐾 Paw</span>
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Buddy</span>
-            </h3>
+            <img
+              src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772738742/Logo_wxtsej.png"
+              alt="PawBuddy"
+              className="h-12 w-auto mb-4"
+            />
             <p className="text-sm text-gray-600">
               Find your perfect furry companion and give them a loving home.
             </p>
