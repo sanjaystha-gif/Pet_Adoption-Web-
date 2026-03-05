@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import type { Pet, PetFormData } from '../../types'
 import { usePets } from '../../context/petStore'
 import { Card } from '../../components/ui/Card'
@@ -88,6 +88,67 @@ const ManagePetsPage: React.FC = () => {
     setPersonalityInput('')
     setImageUrlInput('')
   }
+
+  // Memoized handlers to prevent input re-renders and focus loss during typing
+  const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((f) => ({ ...f, name: e.target.value }))
+  }, [])
+
+  const handleBreedChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, breed: e.target.value }))
+  }, [])
+
+  const handleTypeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, type: e.target.value as 'dog' | 'cat' }))
+  }, [])
+
+  const handleGenderChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, gender: e.target.value as 'male' | 'female' }))
+  }, [])
+
+  const handleSizeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, size: e.target.value as 'small' | 'medium' | 'large' }))
+  }, [])
+
+  const handleStatusChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, status: e.target.value as 'available' | 'pending' | 'adopted' }))
+  }, [])
+
+  const handleAgeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((f) => ({ ...f, age: Number(e.target.value) || 0 }))
+  }, [])
+
+  const handleColorChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, color: e.target.value }))
+  }, [])
+
+  const handleWeightChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((f) => ({ ...f, weight: e.target.value }))
+  }, [])
+
+  const handleLocationChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setForm((f) => ({ ...f, location: e.target.value }))
+  }, [])
+
+  const handleDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setForm((f) => ({ ...f, description: e.target.value }))
+  }, [])
+
+  const handlePersonalityChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPersonalityInput(e.target.value)
+  }, [])
+
+  const handleImageUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageUrlInput(e.target.value)
+  }, [])
+
+  const handleVaccinatedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((f) => ({ ...f, vaccinated: e.target.checked }))
+  }, [])
+
+  const handleNeuteredChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((f) => ({ ...f, neutered: e.target.checked }))
+  }, [])
 
   const handleOpenModal = () => {
     setEditingPetId(null)
@@ -296,11 +357,11 @@ const ManagePetsPage: React.FC = () => {
       <Modal isOpen={isOpen} onClose={handleCloseModal} title={editingPetId ? 'Edit Pet' : 'Add Pet'}>
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Name" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required onBlur={() => {}} />
+            <Input label="Name" value={form.name} onChange={handleNameChange} required onBlur={() => {}} />
             <Select
               label="Breed"
               value={form.breed}
-              onChange={(e) => setForm((f) => ({ ...f, breed: e.target.value }))}
+              onChange={handleBreedChange}
               options={breedOptions}
               placeholder="Select breed"
               required
@@ -309,7 +370,7 @@ const ManagePetsPage: React.FC = () => {
             <Select
               label="Type"
               value={form.type}
-              onChange={(e) => setForm((f) => ({ ...f, type: e.target.value as 'dog' | 'cat' }))}
+              onChange={handleTypeChange}
               options={[
                 { value: 'dog', label: 'Dog' },
                 { value: 'cat', label: 'Cat' }
@@ -319,7 +380,7 @@ const ManagePetsPage: React.FC = () => {
             <Select
               label="Gender"
               value={form.gender}
-              onChange={(e) => setForm((f) => ({ ...f, gender: e.target.value as 'male' | 'female' }))}
+              onChange={handleGenderChange}
               options={[
                 { value: 'male', label: 'Male' },
                 { value: 'female', label: 'Female' }
@@ -329,7 +390,7 @@ const ManagePetsPage: React.FC = () => {
             <Select
               label="Size"
               value={form.size}
-              onChange={(e) => setForm((f) => ({ ...f, size: e.target.value as 'small' | 'medium' | 'large' }))}
+              onChange={handleSizeChange}
               options={[
                 { value: 'small', label: 'Small' },
                 { value: 'medium', label: 'Medium' },
@@ -340,7 +401,7 @@ const ManagePetsPage: React.FC = () => {
             <Select
               label="Status"
               value={form.status}
-              onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as 'available' | 'pending' | 'adopted' }))}
+              onChange={handleStatusChange}
               options={[
                 { value: 'available', label: 'Available' },
                 { value: 'pending', label: 'Pending' },
@@ -353,16 +414,16 @@ const ManagePetsPage: React.FC = () => {
               type="number"
               min={1}
               value={form.age}
-              onChange={(e) => setForm((f) => ({ ...f, age: Number(e.target.value) || 0 }))}
+              onChange={handleAgeChange}
               required
               onBlur={() => {}}
             />
 
-            <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} required onBlur={() => {}} />
+            <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={handleWeightChange} required onBlur={() => {}} />
             <Select
               label="Color"
               value={form.color}
-              onChange={(e) => setForm((f) => ({ ...f, color: e.target.value }))}
+              onChange={handleColorChange}
               options={colorOptions}
               placeholder="Select color"
               required
@@ -371,7 +432,7 @@ const ManagePetsPage: React.FC = () => {
             <Select
               label="Location"
               value={form.location}
-              onChange={(e) => setForm((f) => ({ ...f, location: e.target.value }))}
+              onChange={handleLocationChange}
               options={locationOptions}
               placeholder="Select location"
               required
@@ -383,7 +444,7 @@ const ManagePetsPage: React.FC = () => {
             label="Description"
             rows={4}
             value={form.description}
-            onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
+            onChange={handleDescriptionChange}
             required
             onBlur={() => {}}
           />
@@ -392,7 +453,7 @@ const ManagePetsPage: React.FC = () => {
             label="Personality Traits (comma separated)"
             placeholder="Friendly, Playful, Loyal"
             value={personalityInput}
-            onChange={(e) => setPersonalityInput(e.target.value)}
+            onChange={handlePersonalityChange}
             onBlur={() => {}}
           />
 
@@ -402,7 +463,7 @@ const ManagePetsPage: React.FC = () => {
               <Input
                 placeholder="Paste image URL"
                 value={imageUrlInput}
-                onChange={(e) => setImageUrlInput(e.target.value)}
+                onChange={handleImageUrlChange}
                 onBlur={() => {}}
               />
               <Button variant="outline" onClick={addImageFromUrl}>Add URL</Button>
@@ -432,7 +493,7 @@ const ManagePetsPage: React.FC = () => {
               <input
                 type="checkbox"
                 checked={form.vaccinated}
-                onChange={(e) => setForm((f) => ({ ...f, vaccinated: e.target.checked }))}
+                onChange={handleVaccinatedChange}
               />
               Vaccinated
             </label>
@@ -440,7 +501,7 @@ const ManagePetsPage: React.FC = () => {
               <input
                 type="checkbox"
                 checked={form.neutered}
-                onChange={(e) => setForm((f) => ({ ...f, neutered: e.target.checked }))}
+                onChange={handleNeuteredChange}
               />
               Neutered
             </label>
