@@ -115,7 +115,7 @@ export const usePetStore = create<PetStore>((set, get) => {
       set({ isLoading: true, error: null })
 
       try {
-        const response = await api.put(`/pets/${petId}`, updates)
+        const response = await api.patch(`/pets/${petId}`, updates)
         const updatedPet = normalizePetResponse(response.data)
 
         set(state => ({
