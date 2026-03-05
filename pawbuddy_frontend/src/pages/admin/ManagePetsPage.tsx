@@ -55,17 +55,17 @@ const ManagePetsPage: React.FC = () => {
   const breedOptions = useMemo(() => {
     const unique = Array.from(new Set([...commonBreeds, ...pets.map((pet) => pet.breed), form.breed].filter(Boolean)))
     return unique.sort().map((breed) => ({ value: breed, label: breed }))
-  }, [pets, form.breed])
+  }, [form.breed])
 
   const colorOptions = useMemo(() => {
     const unique = Array.from(new Set([...commonColors, ...pets.map((pet) => pet.color), form.color].filter(Boolean)))
     return unique.sort().map((color) => ({ value: color, label: color }))
-  }, [pets, form.color])
+  }, [form.color])
 
   const locationOptions = useMemo(() => {
     const unique = Array.from(new Set([...commonLocations, ...pets.map((pet) => pet.location), form.location].filter(Boolean)))
     return unique.sort().map((location) => ({ value: location, label: location }))
-  }, [pets, form.location])
+  }, [form.location])
 
   const resetForm = () => {
     setForm({
@@ -222,7 +222,16 @@ const ManagePetsPage: React.FC = () => {
       await deletePet(pet.id)
       showToast.success('Pet deleted')
     } catch (err) {
-      showToast.error('Failed to delete')
+      const apiMessage =
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        (err as { response?: { data?: { message?: string; error?: string } } }).response?.data
+          ? (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.message ||
+            (err as { response?: { data?: { message?: string; error?: string } } }).response?.data?.error
+          : null
+
+      showToast.error(apiMessage || 'Failed to delete')
     }
   }
 
@@ -287,7 +296,7 @@ const ManagePetsPage: React.FC = () => {
       <Modal isOpen={isOpen} onClose={handleCloseModal} title={editingPetId ? 'Edit Pet' : 'Add Pet'}>
         <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Name" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required />
+            <Input label="Name" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} required onBlur={() => {}} />
             <Select
               label="Breed"
               value={form.breed}
@@ -346,9 +355,10 @@ const ManagePetsPage: React.FC = () => {
               value={form.age}
               onChange={(e) => setForm((f) => ({ ...f, age: Number(e.target.value) || 0 }))}
               required
+              onBlur={() => {}}
             />
 
-            <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} required />
+            <Input label="Weight" placeholder="e.g., 12 kg" value={form.weight} onChange={(e) => setForm((f) => ({ ...f, weight: e.target.value }))} required onBlur={() => {}} />
             <Select
               label="Color"
               value={form.color}
@@ -356,6 +366,7 @@ const ManagePetsPage: React.FC = () => {
               options={colorOptions}
               placeholder="Select color"
               required
+              onBlur={() => {}}
             />
             <Select
               label="Location"
@@ -364,6 +375,7 @@ const ManagePetsPage: React.FC = () => {
               options={locationOptions}
               placeholder="Select location"
               required
+              onBlur={() => {}}
             />
           </div>
 
@@ -373,6 +385,7 @@ const ManagePetsPage: React.FC = () => {
             value={form.description}
             onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
             required
+            onBlur={() => {}}
           />
 
           <Input
@@ -380,6 +393,7 @@ const ManagePetsPage: React.FC = () => {
             placeholder="Friendly, Playful, Loyal"
             value={personalityInput}
             onChange={(e) => setPersonalityInput(e.target.value)}
+            onBlur={() => {}}
           />
 
           <div className="space-y-3">
@@ -389,6 +403,7 @@ const ManagePetsPage: React.FC = () => {
                 placeholder="Paste image URL"
                 value={imageUrlInput}
                 onChange={(e) => setImageUrlInput(e.target.value)}
+                onBlur={() => {}}
               />
               <Button variant="outline" onClick={addImageFromUrl}>Add URL</Button>
               <Button variant="secondary" onClick={handleUploadImages}>Upload</Button>

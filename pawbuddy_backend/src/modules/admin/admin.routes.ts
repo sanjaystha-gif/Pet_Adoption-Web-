@@ -4,12 +4,16 @@ import {
   getAllUsers,
   updateUserRole,
   updateProfile,
+  getDashboardStats,
 } from './admin.controller.js';
 
 const router = Router();
 
 // Apply authentication to all admin routes
 router.use(authenticate);
+
+// Dashboard stats (admin only)
+router.get('/stats', requireAdmin, getDashboardStats);
 
 // User management (admin only)
 router.get('/users', requireAdmin, getAllUsers);

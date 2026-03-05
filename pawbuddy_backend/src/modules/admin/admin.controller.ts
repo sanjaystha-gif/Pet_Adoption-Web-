@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { z } from 'zod';
 import { AuthRequest } from '../../middlewares/auth.js';
-import { User } from '../../models/index.js';
+import { User, Pet, Booking } from '../../models/index.js';
 import { sendSuccess, sendError, sendPaginated } from '../../utils/response.js';
 
 /**
@@ -146,6 +146,83 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
       return;
     }
     console.error('Update profile error:', error);
+    sendError(res, 'Internal server error', undefined, 500);
+  }
+};
+
+/**
+ * Get dashboard statistics (admin only)
+ */
+export const getDashboardStats = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Get counts in parallel
+    const [totalUsers, totalPets, totalBookings, adoptedPets, pendingBookings, availablePets] =
+      await Promise.all([
+        User.countDocuments(),
+        Pet.countDocuments(),
+        Booking.countDocuments(),
+        Pet.countDocuments({ status: 'adopted' }),
+        Booking.countDocuments({ status: 'pending' }),
+        Pet.countDocuments({ status: 'available' }),
+      ]);
+
+    // Get recent bookings
+    const recentBookings = await Booking.find()
+      .sort({ submittedAt: -1 })
+      .limit(5)
+      .lean();
+
+    // Get pet type distribution
+    const petsByType = await Pet.aggregate([
+      {
+        $group: {
+          _id: '$type',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Get adoption rate by status
+    const bookingsByStatus = await Booking.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const stats = {
+      overview: {
+        totalUsers,
+        totalPets,
+        totalBookings,
+        adoptedPets,
+        pendingBookings,
+        availablePets,
+      },
+      petDistribution: petsByType.map((item) => ({
+        type: item._id,
+        count: item.count,
+      })),
+      bookingDistribution: bookingsByStatus.map((item) => ({
+        status: item._id,
+        count: item.count,
+      })),
+      recentBookings: recentBookings.map((booking: any) => ({
+        ...booking,
+        id: booking._id.toString(),
+        submittedAt: booking.submittedAt.toISOString(),
+        updatedAt: booking.updatedAt.toISOString(),
+        createdAt: booking.createdAt.toISOString(),
+        _id: undefined,
+        __v: undefined,
+      })),
+    };
+
+    sendSuccess(res, stats, 'Dashboard statistics retrieved successfully', 200);
+  } catch (error) {
+    console.error('Get dashboard stats error:', error);
     sendError(res, 'Internal server error', undefined, 500);
   }
 };

@@ -17,9 +17,11 @@ import {
   RegisterRequest,
   LoginRequest,
   RefreshTokenRequest,
+  ChangePasswordRequest,
   registerSchema,
   loginSchema,
   refreshTokenSchema,
+  changePasswordSchema,
 } from './auth.validator.js';
 import { env } from '../../config/environment.js';
 
@@ -273,6 +275,58 @@ export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
     sendSuccess(res, user, 'User profile retrieved', 200);
   } catch (error) {
     console.error('Get me error:', error);
+    sendError(res, 'Internal server error', undefined, 500);
+  }
+};
+
+/**
+ * Change password
+ */
+export const changePassword = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      sendError(res, 'User not authenticated', undefined, 401);
+      return;
+    }
+
+    // Validate request body
+    const body = changePasswordSchema.parse(req.body);
+
+    // Get user with password field
+    const user = await User.findById(req.user.userId).select('+password');
+    if (!user) {
+      sendError(res, 'User not found', undefined, 404);
+      return;
+    }
+
+    // Verify current password
+    const isPasswordValid = await comparePassword(body.currentPassword, user.password);
+    if (!isPasswordValid) {
+      sendError(res, 'Current password is incorrect', undefined, 400);
+      return;
+    }
+
+    // Check if new password is same as current
+    if (body.currentPassword === body.newPassword) {
+      sendError(res, 'New password must be different from current password', undefined, 400);
+      return;
+    }
+
+    // Hash and update password
+    const hashedPassword = await hashPassword(body.newPassword);
+    user.password = hashedPassword;
+    await user.save();
+
+    // Revoke all refresh tokens for security
+    await RefreshToken.deleteMany({ userId: req.user.userId });
+
+    sendSuccess(res, null, 'Password changed successfully. Please login again.', 200);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      sendError(res, 'Validation error', JSON.stringify(error.issues), 400);
+      return;
+    }
+    console.error('Change password error:', error);
     sendError(res, 'Internal server error', undefined, 500);
   }
 };

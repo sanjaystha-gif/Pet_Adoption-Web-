@@ -15,6 +15,10 @@ const envSchema = z.object({
   UPLOAD_PATH: z.string().default('./uploads'),
   API_VERSION: z.string().default('v1'),
   API_PREFIX: z.string().default('/api'),
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
+  CLOUDINARY_FOLDER: z.string().default('pawbuddy'),
 });
 
 // Parse and validate environment variables

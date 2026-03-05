@@ -15,6 +15,7 @@ import petRoutes from './modules/pets/pets.routes.js';
 import bookingRoutes from './modules/bookings/bookings.routes.js';
 import favouriteRoutes from './modules/favourites/favourites.routes.js';
 import adminRoutes from './modules/admin/admin.routes.js';
+import uploadRoutes from './modules/upload/upload.routes.js';
 
 const app: Express = express();
 
@@ -108,6 +109,7 @@ app.use(`${apiPrefix}/pets`, petRoutes);
 app.use(`${apiPrefix}/bookings`, bookingRoutes);
 app.use(`${apiPrefix}/favourites`, favouriteRoutes);
 app.use(`${apiPrefix}/admin`, adminRoutes);
+app.use(`${apiPrefix}/upload`, uploadRoutes);
 
 // ============================================================================
 // 404 Handler
