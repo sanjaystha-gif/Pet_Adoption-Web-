@@ -29,14 +29,14 @@ const HomePage: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-50 via-white to-purple-50 py-20 relative overflow-hidden" style={{backgroundImage: 'url(https://res.cloudinary.com/dthfai8ky/image/upload/v1772459205/Ellipse_23_fptx65.png)', backgroundPosition: '70% center', backgroundRepeat: 'no-repeat', backgroundSize: '30%'}}>
+      <section className="bg-gradient-to-br from-orange-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-20 relative overflow-hidden" style={{backgroundImage: 'url(https://res.cloudinary.com/dthfai8ky/image/upload/v1772459205/Ellipse_23_fptx65.png)', backgroundPosition: '70% center', backgroundRepeat: 'no-repeat', backgroundSize: '30%'}}>
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 dark:text-white">
                 Find Your <span className="text-primary">Perfect Pet</span>
               </h1>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
                 Browse adorable dogs and cats looking for loving homes. Start your adoption journey today.
               </p>
               <div className="flex gap-3">
@@ -60,10 +60,10 @@ const HomePage: React.FC = () => {
       <section className="py-16">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-3">
+            <h2 className="text-3xl font-bold mb-3 dark:text-white">
               Available Pets
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 dark:text-gray-300">
               Meet some of our pets looking for their forever homes
             </p>
           </div>
@@ -95,9 +95,9 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* How It Works */}
-      <section className="bg-gradient-to-br from-purple-50 via-white to-orange-50 py-16">
+      <section className="bg-gradient-to-br from-purple-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-16">
         <div className="container">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">
             How It Works
           </h2>
 

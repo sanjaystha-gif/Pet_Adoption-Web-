@@ -22,6 +22,13 @@
   --container-max: 75rem;
 }
 
+.dark {
+  --color-bg: #111827;
+  --color-surface: #1F2937;
+  --color-text: #F9FAFB;
+  --color-muted: #9CA3AF;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -32,6 +39,11 @@ body {
   background: linear-gradient(135deg, #FFF7ED 0%, #FFFFFF 50%, #FAF5FF 100%);
   background-attachment: fixed;
   line-height: 1.6;
+}
+
+.dark body {
+  background: linear-gradient(135deg, #0F172A 0%, #111827 50%, #1E293B 100%);
+  background-attachment: fixed;
 }
 
 /* Headings */
@@ -124,9 +136,18 @@ h3 {
     transition: all 0.2s;
   }
 
+  .dark .card {
+    background-color: #1F2937;
+    border-color: #374151;
+  }
+
   .card:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
+  }
+
+  .dark .card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -144,13 +165,25 @@ h3 {
   background: #F3F4F6;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #1F2937;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #D1D5DB;
   border-radius: 5px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #4B5563;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #9CA3AF;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
 }
 
 /* Focus states for accessibility */
@@ -207,6 +240,11 @@ input:focus {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.dark .nav-glass {
+  background: rgba(31, 41, 55, 0.95);
+  border-bottom: 1px solid rgba(249, 115, 22, 0.2);
 }
 
 @media (min-width: 640px) {

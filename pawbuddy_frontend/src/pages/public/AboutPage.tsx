@@ -82,7 +82,7 @@ const AboutPage: React.FC = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       {/* Hero Section */}
       <section
         ref={(el) => (sectionsRef.current[0] = el)}
@@ -105,7 +105,7 @@ const AboutPage: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 dark:from-gray-900 to-transparent"></div>
       </section>
 
       {/* Stats Section */}
@@ -129,8 +129,8 @@ const AboutPage: React.FC = () => {
                 style={{ transitionDelay: visibleSections.has(1) ? `${(idx + 1) * 100}ms` : '0ms' }}
               >
                 <Icon className={`w-8 h-8 mx-auto mb-3 ${stat.color}`} />
-                <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-                <p className="text-sm text-gray-600">{stat.label}</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
               </Card>
             )
           })}
@@ -146,19 +146,19 @@ const AboutPage: React.FC = () => {
         }`}
         style={{ transitionDelay: visibleSections.has(2) ? '150ms' : '0ms' }}
       >
-        <Card className="max-w-4xl mx-auto p-8 md:p-12 bg-gradient-to-br from-white to-gray-50">
+        <Card className="max-w-4xl mx-auto p-8 md:p-12 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
           <div className="flex items-start gap-6">
             <div className="hidden md:block flex-shrink-0">
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-primary/10 dark:bg-primary/20 rounded-2xl flex items-center justify-center">
                 <FiTarget className="w-8 h-8 text-primary" />
               </div>
             </div>
             <div>
-              <h2 className="text-3xl font-bold mb-4 text-gray-900">Our Mission</h2>
-              <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Our Mission</h2>
+              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 PawBuddy exists to ensure no pet goes unloved. We bridge the gap between rescue animals and their forever families through a transparent, supportive adoption process that prioritizes the wellbeing of both pets and adopters.
               </p>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
                 Every year, millions of healthy, loving pets enter shelters. We're changing that narrative by making adoption accessible, joyful, and sustainable—one paw at a time.
               </p>
             </div>
@@ -176,8 +176,8 @@ const AboutPage: React.FC = () => {
         style={{ transitionDelay: visibleSections.has(3) ? '200ms' : '0ms' }}
       >
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-gray-900">Our Core Values</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Our Core Values</h2>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             The principles that guide every decision we make and every pet we help find a home.
           </p>
         </div>
@@ -196,8 +196,8 @@ const AboutPage: React.FC = () => {
                 <div className={`w-14 h-14 rounded-xl ${value.color} flex items-center justify-center mb-4`}>
                   <Icon className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">{value.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{value.description}</p>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{value.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{value.description}</p>
               </Card>
             )
           })}
@@ -208,15 +208,15 @@ const AboutPage: React.FC = () => {
       <section
         ref={(el) => (sectionsRef.current[4] = el)}
         data-section-index="4"
-        className={`bg-gradient-to-b from-gray-50 to-white py-20 transition-all duration-700 ${
+        className={`bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-20 transition-all duration-700 ${
           visibleSections.has(4) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
         style={{ transitionDelay: visibleSections.has(4) ? '250ms' : '0ms' }}
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-gray-900">Meet Our Team</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Meet Our Team</h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               A passionate group of animal advocates, veterinarians, and volunteers dedicated to making a difference.
             </p>
           </div>
@@ -234,9 +234,9 @@ const AboutPage: React.FC = () => {
                   <FiUsers className="w-24 h-24 text-primary/40" />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">{member.name}</h3>
                   <p className="text-primary font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{member.bio}</p>
                 </div>
               </Card>
             ))}

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
+import { FiSun, FiMoon } from 'react-icons/fi'
 import { useAuth } from '../../context/authStore'
+import { useTheme } from '../../context/themeStore'
 import { Avatar } from '../ui/Avatar'
 import { getInitials } from '../../utils/helpers'
 
@@ -9,6 +11,7 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const { user, isAuthenticated, logout, isAdmin } = useAuth()
+  const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -48,7 +51,7 @@ export const Navbar: React.FC = () => {
   ]
 
   return (
-    <nav className="sticky top-0 z-40 nav-glass shadow-sm">
+    <nav className="sticky top-0 z-40 nav-glass dark:bg-gray-800 dark:border-gray-700 shadow-sm">
       <div className="container flex items-center justify-between h-16">
         {/* Logo */}
         <Link
@@ -68,7 +71,7 @@ export const Navbar: React.FC = () => {
             <Link
               key={link.href}
               to={link.href}
-              className="text-gray-700 hover:text-primary focus:text-primary focus:outline-none font-medium transition-colors"
+              className="text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary focus:text-primary focus:outline-none font-medium transition-colors"
             >
               {link.label}
             </Link>
@@ -77,6 +80,19 @@ export const Navbar: React.FC = () => {
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          >
+            {theme === 'light' ? (
+              <FiMoon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            ) : (
+              <FiSun className="w-5 h-5 text-gray-300" />
+            )}
+          </button>
+
           {isAuthenticated ? (
             <>
               {/* User Dropdown */}
@@ -86,7 +102,7 @@ export const Navbar: React.FC = () => {
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
                   aria-controls="user-menu"
-                  className="flex items-center gap-2 p-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-md transition-colors"
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700 focus:outline-none rounded-md transition-colors"
                 >
                   <Avatar
                     src={user?.avatar ?? undefined}
@@ -97,38 +113,38 @@ export const Navbar: React.FC = () => {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div id="user-menu" role="menu" className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-2 z-50 border border-gray-200">
-                    <div className="px-4 py-3 border-b border-gray-200">
-                      <p className="font-semibold text-gray-900">{user?.name}</p>
-                      <p className="text-sm text-gray-500">{user?.email}</p>
+                  <div id="user-menu" role="menu" className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2 z-50 border border-gray-200 dark:border-gray-700">
+                    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                      <p className="font-semibold text-gray-900 dark:text-white">{user?.name}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
                     </div>
 
                     {isAdmin ? (
                       <>
                         <Link
                           to="/admin"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Dashboard
                         </Link>
                         <Link
                           to="/profile"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Profile
                         </Link>
                         <Link
                           to="/admin/pets"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Manage Pets
                         </Link>
                         <Link
                           to="/admin/bookings"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Manage Bookings
@@ -138,28 +154,28 @@ export const Navbar: React.FC = () => {
                       <>
                         <Link
                           to="/dashboard"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Dashboard
                         </Link>
                         <Link
                           to="/profile"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Profile
                         </Link>
                         <Link
                           to="/my-bookings"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           My Bookings
                         </Link>
                         <Link
                           to="/favourites"
-                          className="block px-4 py-2 hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-200 transition-colors"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Favourites
@@ -169,7 +185,7 @@ export const Navbar: React.FC = () => {
 
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-red-600 border-t border-gray-200 transition-colors"
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 text-red-600 dark:text-red-400 border-t border-gray-200 dark:border-gray-700 transition-colors"
                     >
                       Logout
                     </button>
@@ -179,7 +195,7 @@ export const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="hidden sm:block text-gray-700 font-medium hover:text-primary focus:text-primary focus:outline-none">
+              <Link to="/login" className="hidden sm:block text-gray-700 dark:text-gray-200 font-medium hover:text-primary dark:hover:text-primary focus:text-primary focus:outline-none">
                 Login
               </Link>
               <Link to="/register" className="hidden sm:block btn-primary px-5 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
@@ -194,7 +210,7 @@ export const Navbar: React.FC = () => {
             aria-label="Toggle menu"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
-            className="md:hidden p-2 focus:outline-none hover:bg-gray-100 rounded-md transition-colors"
+            className="md:hidden p-2 focus:outline-none hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors text-gray-700 dark:text-gray-200"
           >
             {mobileMenuOpen ? (
               <AiOutlineClose size={24} aria-hidden="true" />
@@ -207,12 +223,12 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div id="mobile-menu" className="md:hidden bg-gray-50 border-t border-gray-200 p-4 space-y-3">
+        <div id="mobile-menu" className="md:hidden bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 space-y-3">
           {publicNavLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className="block text-gray-700 hover:text-primary focus:text-primary focus:outline-none font-medium py-2"
+              className="block text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary focus:text-primary focus:outline-none font-medium py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.label}
@@ -220,7 +236,7 @@ export const Navbar: React.FC = () => {
           ))}
 
           {!isAuthenticated && (
-            <div className="flex gap-2 pt-4 border-t border-gray-200">
+            <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
               <Link
                 to="/login"
                 className="flex-1 text-center py-2 border-2 border-primary text-primary rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
