@@ -53,7 +53,7 @@ export const Navbar: React.FC = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center"
+          className="flex items-center focus:outline-none"
         >
           <img
             src="https://res.cloudinary.com/dthfai8ky/image/upload/v1772738742/Logo_wxtsej.png"
@@ -68,7 +68,7 @@ export const Navbar: React.FC = () => {
             <Link
               key={link.href}
               to={link.href}
-              className="text-gray-700 hover:text-primary font-medium transition-colors"
+              className="text-gray-700 hover:text-primary focus:text-primary focus:outline-none font-medium transition-colors"
             >
               {link.label}
             </Link>
@@ -86,7 +86,7 @@ export const Navbar: React.FC = () => {
                   aria-haspopup="menu"
                   aria-expanded={dropdownOpen}
                   aria-controls="user-menu"
-                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md transition-colors"
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-md transition-colors"
                 >
                   <Avatar
                     src={user?.avatar ?? undefined}
@@ -179,10 +179,10 @@ export const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="hidden sm:block text-gray-700 font-medium hover:text-primary">
+              <Link to="/login" className="hidden sm:block text-gray-700 font-medium hover:text-primary focus:text-primary focus:outline-none">
                 Login
               </Link>
-              <Link to="/register" className="hidden sm:block btn-primary px-5 py-2">
+              <Link to="/register" className="hidden sm:block btn-primary px-5 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
                 Register
               </Link>
             </>
@@ -194,7 +194,7 @@ export const Navbar: React.FC = () => {
             aria-label="Toggle menu"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
-            className="md:hidden p-2"
+            className="md:hidden p-2 focus:outline-none hover:bg-gray-100 rounded-md transition-colors"
           >
             {mobileMenuOpen ? (
               <AiOutlineClose size={24} aria-hidden="true" />
@@ -212,7 +212,7 @@ export const Navbar: React.FC = () => {
             <Link
               key={link.href}
               to={link.href}
-              className="block text-gray-700 hover:text-primary font-medium py-2"
+              className="block text-gray-700 hover:text-primary focus:text-primary focus:outline-none font-medium py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               {link.label}
@@ -223,13 +223,13 @@ export const Navbar: React.FC = () => {
             <div className="flex gap-2 pt-4 border-t border-gray-200">
               <Link
                 to="/login"
-                className="flex-1 text-center py-2 border-2 border-primary text-primary rounded-md font-semibold"
+                className="flex-1 text-center py-2 border-2 border-primary text-primary rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="flex-1 text-center py-2 bg-primary text-white rounded-md font-semibold"
+                className="flex-1 text-center py-2 bg-primary text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Register
               </Link>

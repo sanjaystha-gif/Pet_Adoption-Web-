@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { usePets } from '../../context/petStore'
 import { useAuth } from '../../context/authStore'
@@ -34,6 +34,10 @@ const PetDetailPage: React.FC = () => {
   const { getPetById } = usePets()
   const { isAuthenticated, user } = useAuth()
   const { createBooking } = useBooking()
+  const defaultPhone = useMemo(
+    () => (user?.phone ? (user.phone.startsWith('+977') ? user.phone : `+977${user.phone}`) : '+977'),
+    [user?.phone]
+  )
 
   const pet = id ? getPetById(id) : undefined
   const [isModalOpen, setModalOpen] = useState(false)
@@ -42,7 +46,7 @@ const PetDetailPage: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({})
   
   const [formData, setFormData] = useState<FormData>({
-    phone: user?.phone ? (user.phone.startsWith('+977') ? user.phone : '+977' + user.phone) : '+977',
+    phone: defaultPhone,
     message: '',
     homeType: '',
     yardStatus: '',
@@ -54,14 +58,22 @@ const PetDetailPage: React.FC = () => {
 
   const [newPet, setNewPet] = useState({ type: '', breed: '', name: '' })
 
+  // Separate state for form inputs to prevent re-renders on other fields
+  const [phoneInput, setPhoneInput] = useState(defaultPhone)
+  const [messageInput, setMessageInput] = useState('')
+
   // Memoized handlers to prevent input re-renders and focus loss during typing
   const handlePhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, phone: e.target.value }))
+    const value = e.target.value
+    setPhoneInput(value)
+    setFormData(prev => ({ ...prev, phone: value }))
     setErrors(prev => ({ ...prev, phone: '' }))
   }, [])
 
   const handleMessageChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, message: e.target.value }))
+    const value = e.target.value
+    setMessageInput(value)
+    setFormData(prev => ({ ...prev, message: value }))
     setErrors(prev => ({ ...prev, message: '' }))
   }, [])
 
@@ -101,6 +113,43 @@ const PetDetailPage: React.FC = () => {
   const handleNewPetNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPet(prev => ({ ...prev, name: e.target.value }))
   }, [])
+
+  // Memoized className computations to prevent input re-creation
+  const phoneInputClass = useMemo(() => `w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
+    errors.phone 
+      ? 'border-red-400 bg-red-50 text-red-900 placeholder-red-300 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
+      : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-4 focus:ring-orange-200 focus:border-orange-500 hover:border-gray-400'
+  }`, [errors.phone])
+
+  const messageInputClass = useMemo(() => `w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none resize-none ${
+    errors.message 
+      ? 'border-red-400 bg-red-50 text-red-900 placeholder-red-300 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
+      : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-4 focus:ring-orange-200 focus:border-orange-500 hover:border-gray-400'
+  }`, [errors.message])
+
+  const homeTypeInputClass = useMemo(() => `w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
+    errors.homeType 
+      ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
+      : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
+  }`, [errors.homeType])
+
+  const yardStatusInputClass = useMemo(() => `w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
+    errors.yardStatus 
+      ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
+      : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
+  }`, [errors.yardStatus])
+
+  const workScheduleInputClass = useMemo(() => `w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
+    errors.workSchedule 
+      ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
+      : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
+  }`, [errors.workSchedule])
+
+  const petExperienceInputClass = useMemo(() => `w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
+    errors.petExperience 
+      ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
+      : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
+  }`, [errors.petExperience])
 
   if (!pet) return <div className="container py-20">Pet not found</div>
 
@@ -156,6 +205,17 @@ const PetDetailPage: React.FC = () => {
     setCurrentStep(currentStep - 1)
   }
 
+  const handleOpenModal = useCallback(() => {
+    setModalOpen(true)
+  }, [])
+
+  const handleCloseModal = useCallback(() => {
+    setModalOpen(false)
+    setCurrentStep(1)
+    setPhoneInput(defaultPhone)
+    setMessageInput('')
+  }, [defaultPhone])
+
   const addCurrentPet = () => {
     if (newPet.type && newPet.breed && newPet.name) {
       setFormData({
@@ -197,7 +257,7 @@ const PetDetailPage: React.FC = () => {
       setModalOpen(false)
       setCurrentStep(1)
       setFormData({
-        phone: user?.phone ? (user.phone.startsWith('+977') ? user.phone : '+977' + user.phone) : '+977',
+        phone: defaultPhone,
         message: '',
         homeType: '',
         yardStatus: '',
@@ -206,6 +266,8 @@ const PetDetailPage: React.FC = () => {
         petExperience: '',
         lifetimeCommitment: false,
       })
+      setPhoneInput(defaultPhone)
+      setMessageInput('')
       setErrors({})
       showToast.success('Adoption request submitted! We\'ll be in touch soon.')
     } catch (err) {
@@ -251,12 +313,12 @@ const PetDetailPage: React.FC = () => {
               <p className="font-semibold text-lg capitalize">{pet.status}</p>
             </div>
 
-            <Button variant="primary" size="lg" onClick={() => setModalOpen(true)} className="w-full text-lg py-3">Book Now</Button>
+            <Button variant="primary" size="lg" onClick={handleOpenModal} className="w-full text-lg py-3">Book Now</Button>
           </div>
         </aside>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="" size="md">
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="" size="md">
         <div className="space-y-0">
           {/* Header Section */}
           <div className="bg-gradient-to-r from-orange-500 via-purple-500 to-pink-500 text-white p-6 rounded-t-2xl -m-8 mb-6">
@@ -311,7 +373,7 @@ const PetDetailPage: React.FC = () => {
           <div className="space-y-4">
             {/* STEP 1: Contact Info */}
             {currentStep === 1 && (
-              <div className="space-y-4 animate-fadeIn">
+              <div key="step-1" className="space-y-4 animate-fadeIn">
                 <div className="group">
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-bold text-gray-800">📞 Phone Number</label>
@@ -321,12 +383,8 @@ const PetDetailPage: React.FC = () => {
                     <input 
                       type="tel"
                       placeholder="+977 98xxxxxxxx"
-                      className={`w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
-                        errors.phone 
-                          ? 'border-red-400 bg-red-50 text-red-900 placeholder-red-300 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
-                          : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-4 focus:ring-orange-200 focus:border-orange-500 hover:border-gray-400'
-                      }`}
-                      value={formData.phone} 
+                      className={phoneInputClass}
+                      value={phoneInput} 
                       onChange={handlePhoneChange}
                     />
                     {!errors.phone && formData.phone && <span className="absolute right-4 top-3.5 text-green-500 font-bold">✓</span>}
@@ -337,24 +395,20 @@ const PetDetailPage: React.FC = () => {
                 <div className="group">
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-sm font-bold text-gray-800">🏡 About Your Home</label>
-                    <span className={`text-xs font-semibold ${formData.message.length >= 20 ? 'text-green-600' : 'text-gray-500'}`}>
-                      {formData.message.length}/500
+                    <span className={`text-xs font-semibold ${messageInput.length >= 20 ? 'text-green-600' : 'text-gray-500'}`}>
+                      {messageInput.length}/500
                     </span>
                   </div>
                   <p className="text-xs text-gray-600 mb-2">Tell us about your living situation and why you'd be a great home for {pet.name}</p>
                   <textarea 
                     placeholder="e.g., We have a spacious home with a garden, 2 kids aged 10+, and lots of experience with pets..."
-                    className={`w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none resize-none ${
-                      errors.message 
-                        ? 'border-red-400 bg-red-50 text-red-900 placeholder-red-300 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
-                        : 'border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:ring-4 focus:ring-orange-200 focus:border-orange-500 hover:border-gray-400'
-                    }`}
+                    className={messageInputClass}
                     rows={4}
-                    value={formData.message} 
+                    value={messageInput} 
                     onChange={handleMessageChange}
                   />
                   {errors.message && <p className="text-red-600 text-xs font-bold mt-2 flex items-center gap-1">⚠️ {errors.message}</p>}
-                  {formData.message.length >= 20 && !errors.message && (
+                  {messageInput.length >= 20 && !errors.message && (
                     <p className="text-green-600 text-xs font-bold mt-2 flex items-center gap-1">✓ Good to go!</p>
                   )}
                 </div>
@@ -367,11 +421,7 @@ const PetDetailPage: React.FC = () => {
                 <div className="group">
                   <label className="text-sm font-bold text-gray-800 mb-2 block">🏠 Home Type</label>
                   <select 
-                    className={`w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
-                      errors.homeType 
-                        ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
-                        : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
-                    }`}
+                    className={homeTypeInputClass}
                     value={formData.homeType}
                     onChange={handleHomeTypeChange}
                   >
@@ -379,7 +429,6 @@ const PetDetailPage: React.FC = () => {
                     <option value="house">House</option>
                     <option value="apartment">Apartment</option>
                     <option value="townhouse">Townhouse</option>
-                    <option value="condo">Condo</option>
                   </select>
                   {errors.homeType && <p className="text-red-600 text-xs font-bold mt-2">⚠️ {errors.homeType}</p>}
                 </div>
@@ -387,11 +436,7 @@ const PetDetailPage: React.FC = () => {
                 <div className="group">
                   <label className="text-sm font-bold text-gray-800 mb-2 block">🌳 Yard Status</label>
                   <select 
-                    className={`w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
-                      errors.yardStatus 
-                        ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
-                        : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
-                    }`}
+                    className={yardStatusInputClass}
                     value={formData.yardStatus}
                     onChange={handleYardStatusChange}
                   >
@@ -408,11 +453,7 @@ const PetDetailPage: React.FC = () => {
                 <div className="group">
                   <label className="text-sm font-bold text-gray-800 mb-2 block">⏰ Work Schedule</label>
                   <select 
-                    className={`w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
-                      errors.workSchedule 
-                        ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
-                        : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
-                    }`}
+                    className={workScheduleInputClass}
                     value={formData.workSchedule}
                     onChange={handleWorkScheduleChange}
                   >
@@ -433,11 +474,7 @@ const PetDetailPage: React.FC = () => {
                 <div className="group">
                   <label className="text-sm font-bold text-gray-800 mb-2 block">🐾 Pet Experience</label>
                   <select 
-                    className={`w-full px-5 py-3 rounded-xl border-2 font-medium transition-all duration-200 focus:outline-none ${
-                      errors.petExperience 
-                        ? 'border-red-400 bg-red-50 focus:ring-4 focus:ring-red-200 focus:border-red-500' 
-                        : 'border-gray-300 bg-white focus:ring-4 focus:ring-orange-200 focus:border-orange-500'
-                    }`}
+                    className={petExperienceInputClass}
                     value={formData.petExperience}
                     onChange={handlePetExperienceChange}
                   >
