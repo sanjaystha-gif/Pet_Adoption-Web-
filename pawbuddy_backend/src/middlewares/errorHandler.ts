@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+﻿import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
 import { sendError } from '../utils/response.js';
 
@@ -14,7 +14,7 @@ export const errorHandler = (
   next: NextFunction
 ): void => {
   // Log error for debugging
-  console.error('❌ Error:', err);
+  console.error(' Error:', err);
 
   // Handle Zod validation errors
   if (err instanceof ZodError) {
@@ -45,3 +45,4 @@ export const createError = (message: string, statusCode = 500): AppError => {
   error.isOperational = true;
   return error;
 };
+

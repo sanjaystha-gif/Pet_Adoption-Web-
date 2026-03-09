@@ -1,8 +1,8 @@
-# PawBuddy - Pet Adoption API
+﻿# PawBuddy - Pet Adoption API
 
 Production-ready backend API for a Pet Adoption web application built with Node.js, Express, TypeScript, and MongoDB Atlas.
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js 18+ and npm
@@ -54,7 +54,7 @@ npm run seed
 # Adopter 2: sarah@example.com / adopter123
 ```
 
-## 📡 API Documentation
+##  API Documentation
 
 ### Base URL
 ```
@@ -64,7 +64,7 @@ http://localhost:3000/api
 ### API Docs (Swagger)
 Visit `http://localhost:3000/api-docs` after starting the server
 
-## 🔐 Authentication
+##  Authentication
 
 All protected endpoints require Bearer token in Authorization header:
 ```
@@ -136,7 +136,7 @@ GET /api/auth/me
 POST /api/auth/logout
 ```
 
-## 🐾 Pets Endpoints
+##  Pets Endpoints
 
 ### Get All Pets
 ```
@@ -239,7 +239,7 @@ DELETE /api/pets/{petId}
 Authorization: Bearer <admin_token>
 ```
 
-## 📅 Bookings Endpoints
+##  Bookings Endpoints
 
 ### Create Booking
 ```
@@ -296,7 +296,7 @@ Body:
 }
 ```
 
-## ❤️ Favourites Endpoints
+##  Favourites Endpoints
 
 ### Get My Favourites
 ```
@@ -316,7 +316,7 @@ DELETE /api/favourites/{petId}
 Authorization: Bearer <user_token>
 ```
 
-## 👥 Admin Users Endpoints
+##  Admin Users Endpoints
 
 ### Get All Users
 ```
@@ -351,7 +351,7 @@ Body:
 }
 ```
 
-## 📊 Database Schema
+##  Database Schema
 
 ### User Model
 ```typescript
@@ -434,7 +434,7 @@ Body:
 }
 ```
 
-## 🧪 Testing with Postman
+##  Testing with Postman
 
 1. **Import Collection and Environment**
    - Open Postman
@@ -450,67 +450,67 @@ Body:
    - Use access token for subsequent authenticated requests
    - Token auto-refresh is set up in Postman tests
 
-## 📝 Project Structure
+##  Project Structure
 
 ```
 src/
-├── app.ts                          # Express app setup
-├── index.ts                        # Server entry point
-├── config/
-│   ├── database.ts                # MongoDB connection
-│   └── environment.ts             # Environment variables
-├── models/
-│   ├── User.ts
-│   ├── Pet.ts
-│   ├── Booking.ts
-│   ├── Favourite.ts
-│   ├── RefreshToken.ts
-│   └── index.ts
-├── modules/
-│   ├── auth/
-│   │   ├── auth.controller.ts
-│   │   ├── auth.validator.ts
-│   │   └── auth.routes.ts
-│   ├── pets/
-│   │   ├── pets.controller.ts
-│   │   ├── pets.validator.ts
-│   │   └── pets.routes.ts
-│   ├── bookings/
-│   │   ├── bookings.controller.ts
-│   │   ├── bookings.validator.ts
-│   │   └── bookings.routes.ts
-│   ├── favourites/
-│   │   ├── favourites.controller.ts
-│   │   └── favourites.routes.ts
-│   └── admin/
-│       ├── admin.controller.ts
-│       └── admin.routes.ts
-├── middlewares/
-│   ├── auth.ts                    # JWT authentication
-│   ├── errorHandler.ts            # Error handling
-│   └── validate.ts                # Request validation
-├── types/
-│   └── index.ts                   # TypeScript types
-├── utils/
-│   ├── response.ts                # Response formatting
-│   └── auth.ts                    # Auth utilities
-└── scripts/
-    └── seed.ts                    # Database seeding
+ app.ts                          # Express app setup
+ index.ts                        # Server entry point
+ config/
+    database.ts                # MongoDB connection
+    environment.ts             # Environment variables
+ models/
+    User.ts
+    Pet.ts
+    Booking.ts
+    Favourite.ts
+    RefreshToken.ts
+    index.ts
+ modules/
+    auth/
+       auth.controller.ts
+       auth.validator.ts
+       auth.routes.ts
+    pets/
+       pets.controller.ts
+       pets.validator.ts
+       pets.routes.ts
+    bookings/
+       bookings.controller.ts
+       bookings.validator.ts
+       bookings.routes.ts
+    favourites/
+       favourites.controller.ts
+       favourites.routes.ts
+    admin/
+        admin.controller.ts
+        admin.routes.ts
+ middlewares/
+    auth.ts                    # JWT authentication
+    errorHandler.ts            # Error handling
+    validate.ts                # Request validation
+ types/
+    index.ts                   # TypeScript types
+ utils/
+    response.ts                # Response formatting
+    auth.ts                    # Auth utilities
+ scripts/
+     seed.ts                    # Database seeding
 ```
 
-## 🛡️ Security Features
+##  Security Features
 
-- ✅ JWT authentication with access & refresh tokens
-- ✅ Password hashing with bcrypt
-- ✅ Helmet for HTTP headers security
-- ✅ CORS protection
-- ✅ Rate limiting on auth endpoints
-- ✅ Request validation with Zod
-- ✅ Environment variable protection
-- ✅ Role-based access control (RBAC)
-- ✅ RefreshToken rotation
+-  JWT authentication with access & refresh tokens
+-  Password hashing with bcrypt
+-  Helmet for HTTP headers security
+-  CORS protection
+-  Rate limiting on auth endpoints
+-  Request validation with Zod
+-  Environment variable protection
+-  Role-based access control (RBAC)
+-  RefreshToken rotation
 
-## 🔄 Token Management
+##  Token Management
 
 **Access Token**
 - Short expiry (15 minutes)
@@ -524,7 +524,7 @@ src/
 - Revoked on logout
 - Auto-rotated on each refresh
 
-## 🌐 MongoDB Atlas Setup
+##  MongoDB Atlas Setup
 
 1. Create a cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Create a database user with read/write permissions
@@ -536,7 +536,7 @@ Example URI format:
 mongodb+srv://username:password@cluster.mongodb.net/pawbuddy?retryWrites=true&w=majority
 ```
 
-## 📚 API Response Format
+##  API Response Format
 
 All responses follow consistent envelope format:
 
@@ -574,7 +574,7 @@ All responses follow consistent envelope format:
 }
 ```
 
-## 🚨 Error Handling
+##  Error Handling
 
 Standard HTTP status codes:
 - `200` - OK
@@ -585,7 +585,7 @@ Standard HTTP status codes:
 - `404` - Not Found
 - `500` - Internal Server Error
 
-## 📦 NPM Scripts
+##  NPM Scripts
 
 ```bash
 npm run dev       # Start with hot reload
@@ -595,7 +595,7 @@ npm run seed      # Seed database
 npm run watch     # Watch TypeScript compilation
 ```
 
-## 🤝 Frontend Integration
+##  Frontend Integration
 
 The backend is designed to integrate seamlessly with the React + TypeScript frontend:
 
@@ -605,11 +605,13 @@ The backend is designed to integrate seamlessly with the React + TypeScript fron
 4. **Response Format**: Global API envelope format for consistency
 5. **Pagination**: Standardized pagination with page, pageSize, total, totalPages
 
-## 📞 Support & Documentation
+##  Support & Documentation
 
 - API Docs: `http://localhost:3000/api-docs`
 - Health Check: `GET http://localhost:3000/health`
 
-## 📄 License
+##  License
 
 MIT
+
+

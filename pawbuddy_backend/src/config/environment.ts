@@ -1,4 +1,4 @@
-import { z } from 'zod';
+﻿import { z } from 'zod';
 
 // Define environment schema
 const envSchema = z.object({
@@ -26,7 +26,7 @@ const parseEnv = () => {
   try {
     return envSchema.parse(process.env);
   } catch (error) {
-    console.error('❌ Invalid environment variables:', error);
+    console.error(' Invalid environment variables:', error);
     process.exit(1);
   }
 };
@@ -35,3 +35,4 @@ export const env = parseEnv();
 
 // Export typed environment object
 export type Env = z.infer<typeof envSchema>;
+

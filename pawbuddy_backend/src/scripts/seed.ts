@@ -1,4 +1,4 @@
-import 'dotenv/config';
+﻿import 'dotenv/config';
 import mongoose from 'mongoose';
 import { env } from '../config/environment.js';
 import { User, Pet, Booking, Favourite, RefreshToken } from '../models/index.js';
@@ -6,11 +6,11 @@ import { hashPassword } from '../utils/auth.js';
 
 const seedDatabase = async () => {
   try {
-    console.log('🌱 Starting database seeding...');
+    console.log(' Starting database seeding...');
 
     // Connect to database
     await mongoose.connect(env.MONGODB_URI);
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
 
     // Clear existing data
     await Promise.all([
@@ -20,7 +20,7 @@ const seedDatabase = async () => {
       Favourite.deleteMany({}),
       RefreshToken.deleteMany({}),
     ]);
-    console.log('🗑️  Cleared existing data');
+    console.log('  Cleared existing data');
 
     // Create admin user
     const adminPassword = await hashPassword('admin123');
@@ -34,7 +34,7 @@ const seedDatabase = async () => {
       city: 'New York',
       joinedDate: new Date('2024-01-01'),
     });
-    console.log('✅ Created admin user');
+    console.log(' Created admin user');
 
     // Create adopter users
     const adopterPassword = await hashPassword('adopter123');
@@ -59,7 +59,7 @@ const seedDatabase = async () => {
       city: 'Los Angeles',
       joinedDate: new Date('2024-02-15'),
     });
-    console.log('✅ Created adopter users');
+    console.log(' Created adopter users');
 
     // Create pets
     const pets = await Pet.insertMany([
@@ -274,7 +274,7 @@ const seedDatabase = async () => {
         createdBy: admin._id.toString(),
       },
     ]);
-    console.log(`✅ Created ${pets.length} pets`);
+    console.log(` Created ${pets.length} pets`);
 
     // Create some bookings
     const booking1 = await Booking.create({
@@ -295,7 +295,7 @@ const seedDatabase = async () => {
       status: 'pending',
       submittedAt: new Date('2024-02-26'),
     });
-    console.log('✅ Created sample booking');
+    console.log(' Created sample booking');
 
     // Create some favourites
     await Favourite.create({
@@ -312,12 +312,12 @@ const seedDatabase = async () => {
       userId: adopter2._id.toString(),
       petId: pets[3]!._id.toString(),
     });
-    console.log('✅ Created sample favourites');
+    console.log(' Created sample favourites');
 
     console.log('');
-    console.log('🎉 Database seeding completed successfully!');
+    console.log(' Database seeding completed successfully!');
     console.log('');
-    console.log('📋 Sample login credentials:');
+    console.log(' Sample login credentials:');
     console.log('   Admin: admin@pawbuddy.com / admin123');
     console.log('   Adopter 1: john@example.com / adopter123');
     console.log('   Adopter 2: sarah@example.com / adopter123');
@@ -325,9 +325,11 @@ const seedDatabase = async () => {
 
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error seeding database:', error);
+    console.error(' Error seeding database:', error);
     process.exit(1);
   }
 };
 
 seedDatabase();
+
+

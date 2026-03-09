@@ -1,4 +1,4 @@
-import 'dotenv/config';
+﻿import 'dotenv/config';
 import app from './app.js';
 import { connectDatabase } from './config/database.js';
 import { env } from './config/environment.js';
@@ -12,14 +12,16 @@ const startServer = async () => {
 
     // Start server
     app.listen(PORT, () => {
-      console.log(`✅ Server is running on port ${PORT}`);
-      console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
+      console.log(` Server is running on port ${PORT}`);
+      console.log(` API Documentation: http://localhost:${PORT}/api-docs`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error(' Failed to start server:', error);
     process.exit(1);
   }
 };
 
 startServer();
+
+
 
